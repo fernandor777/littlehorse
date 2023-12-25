@@ -50,6 +50,8 @@ The LittleHorse repository contains the following components:
     - The LittleHorse Protocol Buffer Specification.
 - [`docker`](docker)
     - The LittleHorse Docker Image.
+- [`test-utils`](docker)
+    - A LittleHorse Test Library.
 
 ## Getting Started
 
@@ -63,6 +65,24 @@ To get started *developing* LittleHorse, check out the [Development Guide](docs/
 
 ## License
 
-<a href="https://spdx.org/licenses/SSPL-1.0.html"><img alt="SSPL LICENSE" src="https://img.shields.io/badge/covered%20by-SSPL%201.0-blue"></a>
+All code is intellectual property of LittleHorse Enterprises LLC.
 
-All code in this repository is covered by the [Server Side Public License, Version 1](https://spdx.org/licenses/SSPL-1.0.html). All code is intellectual property of LittleHorse Enterprises LLC.
+### SSPL 1.0
+
+<a href="https://spdx.org/licenses/SSPL-1.0.html"><img alt="SSPL-1.0" src="https://img.shields.io/badge/-SSPL%201.0-blue"></a>
+<a href="https://github.com/littlehorse-enterprises/littlehorse/tree/master/server"><img alt="server" src="https://img.shields.io/badge/-server-success"></a>
+<a href="https://github.com/littlehorse-enterprises/littlehorse/tree/master/dashboard"><img alt="dashboard" src="https://img.shields.io/badge/-dashboard-success"></a>
+
+All code in the folders [server](https://github.com/littlehorse-enterprises/littlehorse/tree/master/server) and [dashboard](https://github.com/littlehorse-enterprises/littlehorse/tree/master/dashboard) is covered by the [Server Side Public License, Version 1](https://spdx.org/licenses/SSPL-1.0.html).
+
+### Apache 2.0
+
+<a href="https://spdx.org/licenses/Apache-2.0.html"><img alt="Apache-2.0E" src="https://img.shields.io/badge/-Apache%202.0-blue"></a>
+<a href="https://github.com/littlehorse-enterprises/littlehorse/tree/master/sdk-go"><img alt="sdk-go" src="https://img.shields.io/badge/-sdk--go-success"></a>
+<a href="https://github.com/littlehorse-enterprises/littlehorse/tree/master/sdk-java"><img alt="sdk-java" src="https://img.shields.io/badge/-sdk--java-success"></a>
+<a href="https://github.com/littlehorse-enterprises/littlehorse/tree/master/sdk-python"><img alt="sdk-python" src="https://img.shields.io/badge/-sdk--python-success"></a>
+<a href="https://github.com/littlehorse-enterprises/littlehorse/tree/master/sdk-dotnet"><img alt="sdk-dotnet" src="https://img.shields.io/badge/-sdk--dotnet-success"></a>
+<a href="https://github.com/littlehorse-enterprises/littlehorse/tree/master/lhctl"><img alt="lhctl" src="https://img.shields.io/badge/-lhctl-success"></a>
+<a href="https://github.com/littlehorse-enterprises/littlehorse/tree/master/examples"><img alt="examples" src="https://img.shields.io/badge/-examples-success"></a>
+<a href="https://github.com/littlehorse-enterprises/littlehorse/tree/master/schemas"><img alt="schemas" src="https://img.shields.io/badge/-schemas-success"></a>
+<a href="https://github.com/littlehorse-enterprises/littlehorse/tree/master/test-utils"><img alt="test-utils" src="https://img.shields.io/badge/-test--utils-success"></a>
