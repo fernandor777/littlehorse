@@ -74,7 +74,8 @@ public class ACSimpleTaskRebalancing extends Test {
 
         reply1 = client.registerTaskWorker(register(client1));
         int newCount = reply1.getYourHostsCount();
-
+        System.out.println(newCount);
+        System.out.println(allHosts.size());
         if (newCount > 1 && newCount == allHosts.size()) {
             throw new RuntimeException("work isn't being balanced!");
         }
