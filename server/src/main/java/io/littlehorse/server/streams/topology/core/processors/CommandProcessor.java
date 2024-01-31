@@ -8,6 +8,7 @@ import io.littlehorse.common.model.PartitionMetricsModel;
 import io.littlehorse.common.model.ScheduledTaskModel;
 import io.littlehorse.common.model.corecommand.CommandModel;
 import io.littlehorse.common.model.getable.global.acl.TenantModel;
+import io.littlehorse.common.model.getable.objectId.PrincipalIdModel;
 import io.littlehorse.common.model.getable.objectId.TenantIdModel;
 import io.littlehorse.common.model.repartitioncommand.RepartitionCommand;
 import io.littlehorse.common.model.repartitioncommand.RepartitionSubCommand;
@@ -15,9 +16,9 @@ import io.littlehorse.common.model.repartitioncommand.repartitionsubcommand.Aggr
 import io.littlehorse.common.model.repartitioncommand.repartitionsubcommand.AggregateWfMetricsModel;
 import io.littlehorse.common.proto.Command;
 import io.littlehorse.common.proto.GetableClassEnum;
-import io.littlehorse.common.proto.Tenant;
 import io.littlehorse.common.proto.WaitForCommandResponse;
 import io.littlehorse.common.util.LHUtil;
+import io.littlehorse.sdk.common.proto.Tenant;
 import io.littlehorse.server.KafkaStreamsServerImpl;
 import io.littlehorse.server.streams.ServerTopology;
 import io.littlehorse.server.streams.store.LHIterKeyValue;
@@ -110,7 +111,7 @@ public class CommandProcessor implements Processor<String, Command, String, Comm
                 server.onResponseReceived(command.getCommandId(), cmdReply);
             }
         } catch (Exception exn) {
-            if (isUserError(exn)) {
+            if (LHUtil.isUserError(exn)) {
                 StatusRuntimeException sre = (StatusRuntimeException) exn;
                 log.debug(
                         "Caught exception processing {}:\nStatus: {}\nDescription: {}\nCause: {}",
@@ -139,38 +140,13 @@ public class CommandProcessor implements Processor<String, Command, String, Comm
                 commandToProcess, metadataHeaders, config, ctx, globalTaskQueueManager, metadataCache, server);
     }
 
-    private boolean isUserError(Exception exn) {
-        if (StatusRuntimeException.class.isAssignableFrom(exn.getClass())) {
-            StatusRuntimeException sre = (StatusRuntimeException) exn;
-
-            switch (sre.getStatus().getCode()) {
-                case NOT_FOUND,
-                        INVALID_ARGUMENT,
-                        ALREADY_EXISTS,
-                        OUT_OF_RANGE,
-                        PERMISSION_DENIED,
-                        UNAUTHENTICATED,
-                        FAILED_PRECONDITION,
-                        // RESOURCE_EXHAUSTED used for quota violations.
-                        RESOURCE_EXHAUSTED:
-                    return true;
-
-                case OK,
-                        UNKNOWN,
-                        UNIMPLEMENTED,
-                        UNAVAILABLE,
-                        INTERNAL,
-                        DEADLINE_EXCEEDED,
-                        DATA_LOSS,
-                        ABORTED,
-                        CANCELLED:
-            }
-        }
-        return false;
-    }
-
     public void onPartitionClaimed() {
+        if (partitionIsClaimed) {
+            throw new RuntimeException("Re-claiming partition! Yikes!");
+        }
+        partitionIsClaimed = true;
         ClusterScopedStore clusterStore = ClusterScopedStore.newInstance(this.globalStore, new BackgroundContext());
+        rehydrateTenant(new TenantModel(LHConstants.DEFAULT_TENANT));
         try (LHKeyValueIterator<?> storedTenants = clusterStore.range(
                 GetableClassEnum.TENANT.getNumber() + "/",
                 GetableClassEnum.TENANT.getNumber() + "/~",
@@ -185,11 +161,6 @@ public class CommandProcessor implements Processor<String, Command, String, Comm
     private void rehydrateTenant(TenantModel tenant) {
         TenantScopedStore coreDefaultStore =
                 TenantScopedStore.newInstance(this.nativeStore, tenant.getId(), new BackgroundContext());
-        if (partitionIsClaimed) {
-            throw new RuntimeException("Re-claiming partition! Yikes!");
-        }
-        partitionIsClaimed = true;
-
         try (LHKeyValueIterator<ScheduledTaskModel> iter = coreDefaultStore.prefixScan("", ScheduledTaskModel.class)) {
             while (iter.hasNext()) {
                 LHIterKeyValue<ScheduledTaskModel> next = iter.next();
@@ -236,7 +207,12 @@ public class CommandProcessor implements Processor<String, Command, String, Comm
                 cpo.partitionKey,
                 cpo,
                 System.currentTimeMillis(),
-                HeadersUtil.metadataHeadersFor(LHConstants.DEFAULT_TENANT, LHConstants.ANONYMOUS_PRINCIPAL));
+                // NOT SURE IF THIS SHOULD BE DEFAULT/ANONYMOUS.
+                // I think we should mark it as "cluster-scoped" and by the "internal system" not any external
+                // principal.
+                HeadersUtil.metadataHeadersFor(
+                        new TenantIdModel(LHConstants.DEFAULT_TENANT),
+                        new PrincipalIdModel(LHConstants.ANONYMOUS_PRINCIPAL)));
         this.ctx.forward(out);
     }
 }
