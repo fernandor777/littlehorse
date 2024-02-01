@@ -14,6 +14,7 @@ import io.littlehorse.sdk.worker.LHTaskMethod;
 import io.littlehorse.test.LHTest;
 import io.littlehorse.test.LHWorkflow;
 import io.littlehorse.test.WorkflowVerifier;
+import java.util.Map;
 import java.util.function.Consumer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,9 @@ public class InputVarsTest {
 
     @LHWorkflow("json-input-vars-wf")
     private Workflow jsonWorkflow;
+
+    @LHWorkflow("json-input-type-checks")
+    private Workflow jsonInputTypeChecks;
 
     @Test
     public void simpleIntegerVarInput() {
@@ -64,6 +68,24 @@ public class InputVarsTest {
                 .waitForStatus(LHStatus.COMPLETED)
                 .thenVerifyTaskRunResult(0, 1, verifyProcessSubObjectOutput)
                 .thenVerifyTaskRunResult(0, 2, verifyProcessBigObjectOutput)
+                .start();
+    }
+
+    @Test
+    public void jsonAreNotStronglyTyped() {
+        workflowVerifier
+                .prepareRun(jsonInputTypeChecks, Arg.of("var", Map.of("theField", "not-an-int")))
+                .waitForStatus(LHStatus.ERROR)
+                .thenVerifyNodeRun(0, 2, nodeRun -> {
+                    Assertions.assertEquals(nodeRun.getFailuresList().size(), 1);
+                    Assertions.assertEquals(nodeRun.getFailuresList().get(0).getFailureName(), "VAR_SUB_ERROR");
+                    Assertions.assertFalse(
+                            nodeRun.getTask().hasTaskRunId(), "The TaskRun shoudln't have been created.");
+                })
+                .start();
+        workflowVerifier
+                .prepareRun(jsonInputTypeChecks, Arg.of("var", Map.of("theField", 1776)))
+                .waitForStatus(LHStatus.COMPLETED)
                 .start();
     }
 
@@ -109,6 +131,19 @@ public class InputVarsTest {
             // Can also pass in a whole sub object rather than just a
             // string
             thread.execute("process-sub-obj", myVar.jsonPath("$.subObject"));
+        });
+    }
+
+    @LHWorkflow("json-input-type-checks")
+    public Workflow jsonInputTypeChecks() {
+        return new WorkflowImpl("json-input-type-checks", thread -> {
+            WfRunVariable var = thread.addVariable("var", VariableType.JSON_OBJ);
+            // This ensures the RunWf request succeeds, since it's the first
+            // node that actually gets executed.
+            thread.execute("ab-double-it", 12345);
+
+            // This one either fails or succeeds.
+            thread.execute("ab-double-it", var.jsonPath("$.theField"));
         });
     }
 

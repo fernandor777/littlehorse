@@ -10,21 +10,28 @@ import io.littlehorse.sdk.common.proto.DeleteTaskDefRequest;
 import io.littlehorse.sdk.common.proto.DeleteWfSpecRequest;
 import io.littlehorse.sdk.common.proto.GetLatestWfSpecRequest;
 import io.littlehorse.sdk.common.proto.LHHostInfo;
+import io.littlehorse.sdk.common.proto.LHStatus;
 import io.littlehorse.sdk.common.proto.LittleHorseGrpc;
 import io.littlehorse.sdk.common.proto.PutTaskDefRequest;
 import io.littlehorse.sdk.common.proto.PutWfSpecRequest;
 import io.littlehorse.sdk.common.proto.RegisterTaskWorkerRequest;
 import io.littlehorse.sdk.common.proto.RegisterTaskWorkerResponse;
+import io.littlehorse.sdk.common.proto.RunWfRequest;
 import io.littlehorse.sdk.common.proto.TaskDef;
 import io.littlehorse.sdk.common.proto.TaskDefId;
+import io.littlehorse.sdk.common.proto.ThreadRun;
+import io.littlehorse.sdk.common.proto.WfRunId;
 import io.littlehorse.sdk.common.proto.WfSpec;
 import io.littlehorse.sdk.common.proto.WfSpecId;
 import io.littlehorse.sdk.wfsdk.Workflow;
 import io.littlehorse.sdk.wfsdk.internal.WorkflowImpl;
+import io.littlehorse.sdk.worker.LHTaskMethod;
+import io.littlehorse.sdk.worker.LHTaskWorker;
 import io.littlehorse.test.LHTest;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 @LHTest
@@ -33,14 +40,21 @@ public class LHMetadataLifecycle {
     private LittleHorseGrpc.LittleHorseBlockingStub client;
     private Set<String> allHosts = new HashSet<>();
     private final String taskA = "task-a";
+    private final String taskB = "task-b";
+    private final String integerTask = "integer-task";
     private final String testWfSpec = "test-wf-spec";
     private LHConfig config;
 
+    @BeforeEach
+    public void setup() {
+        client.putTaskDef(PutTaskDefRequest.newBuilder().setName(taskA).build());
+        client.putTaskDef(PutTaskDefRequest.newBuilder().setName(taskB).build());
+    }
+
     @AfterEach
     public void cleanup() {
-        client.deleteTaskDef(DeleteTaskDefRequest.newBuilder()
-                .setId(TaskDefId.newBuilder().setName(taskA))
-                .build());
+        cleanTaskDef(taskA);
+        cleanTaskDef(taskB);
         try {
             WfSpec latestWfSpec = client.getLatestWfSpec(
                     GetLatestWfSpecRequest.newBuilder().setName(testWfSpec).build());
@@ -55,10 +69,21 @@ public class LHMetadataLifecycle {
         }
     }
 
+    private void cleanTaskDef(String taskName) {
+        try {
+            client.getTaskDef(TaskDefId.newBuilder().setName(taskName).build());
+            client.deleteTaskDef(DeleteTaskDefRequest.newBuilder()
+                    .setId(TaskDefId.newBuilder().setName(taskName))
+                    .build());
+        } catch (StatusRuntimeException ex) {
+            if (!ex.getStatus().getCode().equals(Code.NOT_FOUND)) {
+                throw ex;
+            }
+        }
+    }
+
     @Test
     public void shouldRemoveDeadTaskWorkers() throws Exception {
-        client.putTaskDef(PutTaskDefRequest.newBuilder().setName(taskA).build());
-
         // Taskdef needs to propagate to all servers
         Thread.sleep(50);
 
@@ -92,6 +117,7 @@ public class LHMetadataLifecycle {
 
     @Test
     public void shouldNotRegisterAWfSpecThatHasAMissingTaskDef() {
+        cleanTaskDef(taskA);
         Workflow wf = new WorkflowImpl(testWfSpec, thread -> {
             thread.execute(taskA);
         });
@@ -118,6 +144,61 @@ public class LHMetadataLifecycle {
                 .isZero();
     }
 
+    @Test
+    public void shouldFailWfRunIfTaskDefDoesNotExist() throws Exception {
+        LHTaskWorker worker1 = new LHTaskWorker(new TaskWfSpecLifecycleWorker(), taskA, config);
+        worker1.registerTaskDef();
+        LHTaskWorker worker2 = new LHTaskWorker(new TaskWfSpecLifecycleWorker(), taskB, config);
+        worker2.registerTaskDef();
+        new WorkflowImpl(testWfSpec, thread -> {
+                    thread.execute(taskA);
+                    thread.execute(taskB);
+                })
+                .registerWfSpec(client);
+
+        Thread.sleep(200); // Wait for the data to propagate
+        worker1.start();
+        worker2.start();
+
+        client.deleteTaskDef(DeleteTaskDefRequest.newBuilder()
+                .setId(TaskDefId.newBuilder().setName(taskA).build())
+                .build());
+        WfRunId wfRunId = client.runWf(
+                        RunWfRequest.newBuilder().setWfSpecName(testWfSpec).build())
+                .getId();
+        Thread.sleep(200); // Wait for the data to propagate
+        assertThat(client.getWfRun(wfRunId))
+                .withFailMessage("WfRun should fail when task def does not exist")
+                .matches(wfRun -> wfRun.getStatus().equals(LHStatus.ERROR))
+                .extracting(wfRun -> wfRun.getThreadRuns(0))
+                .extracting(ThreadRun::getErrorMessage)
+                .withFailMessage("Should have error message about deleted taskdef! WfRun: " + wfRunId.getId())
+                .matches(threadRunErrorMessage -> threadRunErrorMessage.contains("Appears that TaskDef was deleted"));
+    }
+
+    @Test
+    public void shouldVerifyTaskNodeVariableType() throws Exception {
+        LHTaskWorker worker = new LHTaskWorker(new TaskWfSpecLifecycleWorker(), integerTask, config);
+        worker.registerTaskDef();
+        Workflow wrongWfSpec = new WorkflowImpl("ae-invalid-asdf", thread -> {
+            thread.execute(integerTask, "not-an-int");
+        });
+        assertThatThrownBy(() -> wrongWfSpec.registerWfSpec(client))
+                .withFailMessage("Should have got task input var type error!")
+                .isInstanceOf(StatusRuntimeException.class)
+                .matches(statusRuntimeException -> ((StatusRuntimeException) statusRuntimeException)
+                        .getStatus()
+                        .getCode()
+                        .equals(Code.INVALID_ARGUMENT))
+                .matches(statusRuntimeException ->
+                        statusRuntimeException.getMessage().contains("needs to be INT"));
+
+        assertThatThrownBy(() -> client.getLatestWfSpec(GetLatestWfSpecRequest.newBuilder()
+                        .setName("ae-invalid-asdf")
+                        .build()))
+                .isInstanceOf(StatusRuntimeException.class);
+    }
+
     private String hostToString(LHHostInfo host) {
         return host.getHost() + ":" + host.getPort();
     }
@@ -128,5 +209,23 @@ public class LHMetadataLifecycle {
                 .setTaskDefId(LHLibUtil.taskDefId(taskA))
                 .setListenerName(config.getConnectListener())
                 .build();
+    }
+
+    class TaskWfSpecLifecycleWorker {
+
+        @LHTaskMethod(taskA)
+        public String foo() {
+            return "hi";
+        }
+
+        @LHTaskMethod(taskB)
+        public String bar() {
+            return "hi";
+        }
+
+        @LHTaskMethod(integerTask)
+        public int doSomething(Integer number) {
+            return number;
+        }
     }
 }
