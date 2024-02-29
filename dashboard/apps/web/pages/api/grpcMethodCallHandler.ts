@@ -1,11 +1,9 @@
+import { constants } from 'http2'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from './auth/[...nextauth]'
-import type { Client } from 'nice-grpc/src/client/Client'
-import type { LittleHorseDefinition } from '../../littlehorse-public-api/service'
-import LHClient from './LHClient'
 import { Status } from 'nice-grpc-common'
-import { constants } from 'http2'
+import lhConfig from '../../lhConfig'
+import { authOptions } from './auth/[...nextauth]'
 
 const unauthorizedResponseContent = {
     status: constants.HTTP_STATUS_UNAUTHORIZED,
@@ -19,7 +17,7 @@ export const makeGrpcCall = async (grpcMethodToCall: string,
         res.status(401)
             .json(unauthorizedResponseContent)
     } else {
-        const client: Client<LittleHorseDefinition> = LHClient.getInstance(session?.accessToken)
+        const client = lhConfig().getClient(session?.accessToken)
 
         try {
             return await client[grpcMethodToCall](grpcRequestBody)
@@ -39,10 +37,12 @@ export const handleGrpcCallWithNext = async (grpcMethodToCall: string,
         res.status(401)
             .json(unauthorizedResponseContent)
     } else {
-        const client: Client<LittleHorseDefinition> = LHClient.getInstance(session?.accessToken)
+        const client = lhConfig().getClient(
+          session?.accessToken
+        );
 
         try {
-            const response: any = await client[grpcMethodToCall](grpcRequestBody)
+            const response = await client[grpcMethodToCall](grpcRequestBody)
             res.send(response)
         } catch (error) {
             console.error('grpcMethodCallHandler - Error during GRPC call:', error)

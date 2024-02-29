@@ -117,7 +117,17 @@ EOF
     create_keycloak_client $SERVER_CLIENT_ID $SERVER_CLIENT_SECRET
     create_keycloak_client $WORKER_CLIENT_ID $WORKER_CLIENT_SECRET
     create_keycloak_client $CANARY_CLIENT_ID $CANARY_CLIENT_SECRET
-    create_keycloak_client $DASHBOARD_CLIENT_ID $DASHBOARD_CLIENT_SECRET
+
+    http -q -A bearer -a "$KEYCLOAK_ADMIN_ACCESS_TOKEN" POST "http://localhost:${KEYCLOAK_PORT}/admin/realms/${REALM_NAME}/clients" \
+        protocol=openid-connect \
+        clientId="$DASHBOARD_CLIENT_ID" \
+        id="$DASHBOARD_CLIENT_ID" \
+        secret="$DASHBOARD_CLIENT_SECRET" \
+        serviceAccountsEnabled:=true \
+        directAccessGrantsEnabled:=true \
+        publicClient:=false \
+        redirectUris:='["http://localhost:3001/api/auth/callback/keycloak"]'
+    echo "Client '${DASHBOARD_CLIENT_ID}' created"
 
     http -q -A bearer -a "$KEYCLOAK_ADMIN_ACCESS_TOKEN" POST "http://localhost:${KEYCLOAK_PORT}/admin/realms/${REALM_NAME}/clients" \
         protocol=openid-connect \
