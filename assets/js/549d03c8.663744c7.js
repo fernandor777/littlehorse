@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklh_site=self.webpackChunklh_site||[]).push([[1584],{8925:s=>{s.exports=JSON.parse('{"label":"friday-tech-tips","permalink":"/blog/tags/friday-tech-tips","allTagsPath":"/blog/tags","count":1}')}}]);
