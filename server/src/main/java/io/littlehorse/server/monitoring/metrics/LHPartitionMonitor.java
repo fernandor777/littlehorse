@@ -13,35 +13,42 @@ import javax.annotation.Nullable;
 
 public class LHPartitionMonitor {
     private final Map<String, UsageMetric> metrics = new HashMap<>();
-    private final Map<String, MonitorConfig> configs = new HashMap<>();
+    private final Map<String, MonitorConfigModel> configs = new HashMap<>();
 
-    public void record(UsageMeasure usageMeasure) {
+    public void record(final UsageMeasure usageMeasure) {
         UsageMetric currentMetric = metrics.get(usageMeasure.id());
-        UsageMetric calculatedMetric =
+        Optional<UsageMetric> metricOrEmpty =
                 calculateMetricFor(configs.get(usageMeasure.id()), currentMetric, usageMeasure.createdOn());
-        metrics.put(usageMeasure.id(), calculatedMetric);
+        metricOrEmpty.ifPresent(usageMetric -> metrics.put(usageMeasure.id(), usageMetric));
     }
 
     public Optional<UsageMetric> getMetric(String metricId) {
         return Optional.ofNullable(metrics.get(metricId));
     }
 
-    public void register(MonitorConfig config) {
-        configs.put(config.metricId(), config);
+    public void register(MonitorConfigModel config) {
+        configs.put(config.getMetricId(), config);
     }
 
-    public UsageMetric calculateMetricFor(
-            @Nullable MonitorConfig config, @Nullable UsageMetric currentMetric, Date measureTime) {
+    public boolean isMetricEnabledFor(String metricId) {
+        return configs.containsKey(metricId);
+    }
+
+    public Optional<UsageMetric> calculateMetricFor(
+            @Nullable MonitorConfigModel config, @Nullable UsageMetric currentMetric, Date measureTime) {
+        if (config == null) {
+            return Optional.empty();
+        }
         if (currentMetric != null && currentMetric.isStillActive(measureTime)) {
             currentMetric.increment();
-            return currentMetric;
+            return Optional.of(currentMetric);
         }
         // create metric for a new window
         Date windowStart = measureTime;
-        LocalDateTime windowEndLocalTime = calculateWindowEnd(windowStart, config.windowLengthMs());
+        LocalDateTime windowEndLocalTime = calculateWindowEnd(windowStart, config.getWindowLength());
         Date windowEnd =
                 Date.from(windowEndLocalTime.toInstant(OffsetDateTime.now().getOffset()));
-        return new UsageMetric(config.metricId(), 1L, windowStart, windowEnd);
+        return Optional.of(new UsageMetric(config.getMetricId(), 1L, windowStart, windowEnd));
     }
 
     //

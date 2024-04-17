@@ -1,0 +1,19 @@
+syntax = "proto3";
+package littlehorse;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = ".;model";
+option java_multiple_files = true;
+option java_package = "io.littlehorse.sdk.common.proto";
+option csharp_namespace = "LittleHorse.Common.Proto";
+
+message MonitorConfig {
+	MonitorConfigId id = 1;
+	int64 window_length_ms = 2;
+	google.protobuf.Timestamp created_time = 3;
+}
+
+message MonitorConfigId {
+	string id = 1;
+}

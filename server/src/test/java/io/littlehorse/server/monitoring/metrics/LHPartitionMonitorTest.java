@@ -6,6 +6,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -14,6 +15,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class LHPartitionMonitorTest {
 
     private final LHPartitionMonitor partitionMonitor = new LHPartitionMonitor();
+
+    @Test
+    public void shouldRegisterMetricConfig() {
+        String metricId = "DeletePrincipalCommand";
+        Duration windowLengthMs = Duration.ofHours(1);
+        MonitorConfigModel config = new MonitorConfigModel(metricId, windowLengthMs);
+        partitionMonitor.register(config);
+        assertThat(partitionMonitor.isMetricEnabledFor(metricId)).isTrue();
+    }
 
     @Test
     public void shouldCalculateMetricUsagePerId() {
@@ -34,9 +44,9 @@ class LHPartitionMonitorTest {
     public void shouldAggregateMetricsByMonitorConfig() {
         String metricId = "DeletePrincipalCommand";
         Duration windowLengthMs = Duration.ofHours(1);
-        Duration advanceByMs = Duration.ofMinutes(1);
-        MonitorConfig config = new MonitorConfig(metricId, windowLengthMs, advanceByMs);
+        MonitorConfigModel config = new MonitorConfigModel(metricId, windowLengthMs);
         partitionMonitor.register(config);
+        assertThat(partitionMonitor.isMetricEnabledFor(metricId)).isTrue();
         UsageMeasure measure1 = new UsageMeasure(
                 metricId,
                 Date.from(LocalDateTime.now()
@@ -51,5 +61,15 @@ class LHPartitionMonitorTest {
         UsageMetric metric = partitionMonitor.getMetric(metricId).get();
         assertThat(metric.getId()).isEqualTo(metricId);
         assertThat(metric.getValue()).isEqualTo(2L);
+    }
+
+    @Test
+    public void shouldIgnoreMeasureWhenIfThereIsNoConfig() {
+        String metricId = "DeletePrincipalCommand";
+        UsageMeasure measure2 = new UsageMeasure(metricId, new Date());
+        assertThat(partitionMonitor.isMetricEnabledFor(metricId)).isFalse();
+        partitionMonitor.record(measure2);
+        Optional<UsageMetric> metric = partitionMonitor.getMetric(metricId);
+        assertThat(metric).isEmpty();
     }
 }

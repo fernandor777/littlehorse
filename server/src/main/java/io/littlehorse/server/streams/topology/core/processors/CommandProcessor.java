@@ -130,6 +130,8 @@ public class CommandProcessor implements Processor<String, Command, String, Comm
             // If we get here, then a Really Bad Thing has happened and we should
             // let the sysadmin of this LH Server know, and provide as much debugging
             // information as possible.
+        } finally {
+
         }
     }
 
