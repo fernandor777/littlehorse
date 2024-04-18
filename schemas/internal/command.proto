@@ -13,6 +13,7 @@ import "common_enums.proto";
 import "storage.proto";
 import "acls.proto";
 import "job.proto";
+import "metrics.proto";
 
 
 // This is the schema of everything that flows through the Central Command topic.
@@ -62,6 +63,7 @@ message MetadataCommand {
         DeletePrincipalRequest delete_principal = 13;
         PutTenantRequest put_tenant = 14;
         PutWorkflowEventDefRequest workflow_event_def = 15;
+        EnableMetricRequest enable_metric = 16;
         // TODO: DeleteTenant
     }
 }

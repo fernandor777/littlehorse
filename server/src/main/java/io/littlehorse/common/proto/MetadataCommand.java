@@ -62,6 +62,7 @@ private static final long serialVersionUID = 0L;
     DELETE_PRINCIPAL(13),
     PUT_TENANT(14),
     WORKFLOW_EVENT_DEF(15),
+    ENABLE_METRIC(16),
     METADATACOMMAND_NOT_SET(0);
     private final int value;
     private MetadataCommandCase(int value) {
@@ -91,6 +92,7 @@ private static final long serialVersionUID = 0L;
         case 13: return DELETE_PRINCIPAL;
         case 14: return PUT_TENANT;
         case 15: return WORKFLOW_EVENT_DEF;
+        case 16: return ENABLE_METRIC;
         case 0: return METADATACOMMAND_NOT_SET;
         default: return null;
       }
@@ -522,10 +524,6 @@ private static final long serialVersionUID = 0L;
 
   public static final int WORKFLOW_EVENT_DEF_FIELD_NUMBER = 15;
   /**
-   * <pre>
-   * TODO: DeleteTenant
-   * </pre>
-   *
    * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
    * @return Whether the workflowEventDef field is set.
    */
@@ -534,10 +532,6 @@ private static final long serialVersionUID = 0L;
     return metadataCommandCase_ == 15;
   }
   /**
-   * <pre>
-   * TODO: DeleteTenant
-   * </pre>
-   *
    * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
    * @return The workflowEventDef.
    */
@@ -549,10 +543,6 @@ private static final long serialVersionUID = 0L;
     return io.littlehorse.sdk.common.proto.PutWorkflowEventDefRequest.getDefaultInstance();
   }
   /**
-   * <pre>
-   * TODO: DeleteTenant
-   * </pre>
-   *
    * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
    */
   @java.lang.Override
@@ -561,6 +551,49 @@ private static final long serialVersionUID = 0L;
        return (io.littlehorse.sdk.common.proto.PutWorkflowEventDefRequest) metadataCommand_;
     }
     return io.littlehorse.sdk.common.proto.PutWorkflowEventDefRequest.getDefaultInstance();
+  }
+
+  public static final int ENABLE_METRIC_FIELD_NUMBER = 16;
+  /**
+   * <pre>
+   * TODO: DeleteTenant
+   * </pre>
+   *
+   * <code>.littlehorse.EnableMetricRequest enable_metric = 16;</code>
+   * @return Whether the enableMetric field is set.
+   */
+  @java.lang.Override
+  public boolean hasEnableMetric() {
+    return metadataCommandCase_ == 16;
+  }
+  /**
+   * <pre>
+   * TODO: DeleteTenant
+   * </pre>
+   *
+   * <code>.littlehorse.EnableMetricRequest enable_metric = 16;</code>
+   * @return The enableMetric.
+   */
+  @java.lang.Override
+  public io.littlehorse.sdk.common.proto.EnableMetricRequest getEnableMetric() {
+    if (metadataCommandCase_ == 16) {
+       return (io.littlehorse.sdk.common.proto.EnableMetricRequest) metadataCommand_;
+    }
+    return io.littlehorse.sdk.common.proto.EnableMetricRequest.getDefaultInstance();
+  }
+  /**
+   * <pre>
+   * TODO: DeleteTenant
+   * </pre>
+   *
+   * <code>.littlehorse.EnableMetricRequest enable_metric = 16;</code>
+   */
+  @java.lang.Override
+  public io.littlehorse.sdk.common.proto.EnableMetricRequestOrBuilder getEnableMetricOrBuilder() {
+    if (metadataCommandCase_ == 16) {
+       return (io.littlehorse.sdk.common.proto.EnableMetricRequest) metadataCommand_;
+    }
+    return io.littlehorse.sdk.common.proto.EnableMetricRequest.getDefaultInstance();
   }
 
   private byte memoizedIsInitialized = -1;
@@ -618,6 +651,9 @@ private static final long serialVersionUID = 0L;
     }
     if (metadataCommandCase_ == 15) {
       output.writeMessage(15, (io.littlehorse.sdk.common.proto.PutWorkflowEventDefRequest) metadataCommand_);
+    }
+    if (metadataCommandCase_ == 16) {
+      output.writeMessage(16, (io.littlehorse.sdk.common.proto.EnableMetricRequest) metadataCommand_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -682,6 +718,10 @@ private static final long serialVersionUID = 0L;
     if (metadataCommandCase_ == 15) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(15, (io.littlehorse.sdk.common.proto.PutWorkflowEventDefRequest) metadataCommand_);
+    }
+    if (metadataCommandCase_ == 16) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(16, (io.littlehorse.sdk.common.proto.EnableMetricRequest) metadataCommand_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -758,6 +798,10 @@ private static final long serialVersionUID = 0L;
         if (!getWorkflowEventDef()
             .equals(other.getWorkflowEventDef())) return false;
         break;
+      case 16:
+        if (!getEnableMetric()
+            .equals(other.getEnableMetric())) return false;
+        break;
       case 0:
       default:
     }
@@ -828,6 +872,10 @@ private static final long serialVersionUID = 0L;
       case 15:
         hash = (37 * hash) + WORKFLOW_EVENT_DEF_FIELD_NUMBER;
         hash = (53 * hash) + getWorkflowEventDef().hashCode();
+        break;
+      case 16:
+        hash = (37 * hash) + ENABLE_METRIC_FIELD_NUMBER;
+        hash = (53 * hash) + getEnableMetric().hashCode();
         break;
       case 0:
       default:
@@ -1009,6 +1057,9 @@ private static final long serialVersionUID = 0L;
       if (workflowEventDefBuilder_ != null) {
         workflowEventDefBuilder_.clear();
       }
+      if (enableMetricBuilder_ != null) {
+        enableMetricBuilder_.clear();
+      }
       metadataCommandCase_ = 0;
       metadataCommand_ = null;
       return this;
@@ -1108,6 +1159,10 @@ private static final long serialVersionUID = 0L;
       if (metadataCommandCase_ == 15 &&
           workflowEventDefBuilder_ != null) {
         result.metadataCommand_ = workflowEventDefBuilder_.build();
+      }
+      if (metadataCommandCase_ == 16 &&
+          enableMetricBuilder_ != null) {
+        result.metadataCommand_ = enableMetricBuilder_.build();
       }
     }
 
@@ -1210,6 +1265,10 @@ private static final long serialVersionUID = 0L;
         }
         case WORKFLOW_EVENT_DEF: {
           mergeWorkflowEventDef(other.getWorkflowEventDef());
+          break;
+        }
+        case ENABLE_METRIC: {
+          mergeEnableMetric(other.getEnableMetric());
           break;
         }
         case METADATACOMMAND_NOT_SET: {
@@ -1338,6 +1397,13 @@ private static final long serialVersionUID = 0L;
               metadataCommandCase_ = 15;
               break;
             } // case 122
+            case 130: {
+              input.readMessage(
+                  getEnableMetricFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              metadataCommandCase_ = 16;
+              break;
+            } // case 130
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -3133,10 +3199,6 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         io.littlehorse.sdk.common.proto.PutWorkflowEventDefRequest, io.littlehorse.sdk.common.proto.PutWorkflowEventDefRequest.Builder, io.littlehorse.sdk.common.proto.PutWorkflowEventDefRequestOrBuilder> workflowEventDefBuilder_;
     /**
-     * <pre>
-     * TODO: DeleteTenant
-     * </pre>
-     *
      * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
      * @return Whether the workflowEventDef field is set.
      */
@@ -3145,10 +3207,6 @@ private static final long serialVersionUID = 0L;
       return metadataCommandCase_ == 15;
     }
     /**
-     * <pre>
-     * TODO: DeleteTenant
-     * </pre>
-     *
      * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
      * @return The workflowEventDef.
      */
@@ -3167,10 +3225,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * TODO: DeleteTenant
-     * </pre>
-     *
      * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
      */
     public Builder setWorkflowEventDef(io.littlehorse.sdk.common.proto.PutWorkflowEventDefRequest value) {
@@ -3187,10 +3241,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * TODO: DeleteTenant
-     * </pre>
-     *
      * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
      */
     public Builder setWorkflowEventDef(
@@ -3205,10 +3255,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * TODO: DeleteTenant
-     * </pre>
-     *
      * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
      */
     public Builder mergeWorkflowEventDef(io.littlehorse.sdk.common.proto.PutWorkflowEventDefRequest value) {
@@ -3232,10 +3278,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * TODO: DeleteTenant
-     * </pre>
-     *
      * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
      */
     public Builder clearWorkflowEventDef() {
@@ -3255,20 +3297,12 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * TODO: DeleteTenant
-     * </pre>
-     *
      * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
      */
     public io.littlehorse.sdk.common.proto.PutWorkflowEventDefRequest.Builder getWorkflowEventDefBuilder() {
       return getWorkflowEventDefFieldBuilder().getBuilder();
     }
     /**
-     * <pre>
-     * TODO: DeleteTenant
-     * </pre>
-     *
      * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
      */
     @java.lang.Override
@@ -3283,10 +3317,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * TODO: DeleteTenant
-     * </pre>
-     *
      * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
@@ -3306,6 +3336,184 @@ private static final long serialVersionUID = 0L;
       metadataCommandCase_ = 15;
       onChanged();
       return workflowEventDefBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        io.littlehorse.sdk.common.proto.EnableMetricRequest, io.littlehorse.sdk.common.proto.EnableMetricRequest.Builder, io.littlehorse.sdk.common.proto.EnableMetricRequestOrBuilder> enableMetricBuilder_;
+    /**
+     * <pre>
+     * TODO: DeleteTenant
+     * </pre>
+     *
+     * <code>.littlehorse.EnableMetricRequest enable_metric = 16;</code>
+     * @return Whether the enableMetric field is set.
+     */
+    @java.lang.Override
+    public boolean hasEnableMetric() {
+      return metadataCommandCase_ == 16;
+    }
+    /**
+     * <pre>
+     * TODO: DeleteTenant
+     * </pre>
+     *
+     * <code>.littlehorse.EnableMetricRequest enable_metric = 16;</code>
+     * @return The enableMetric.
+     */
+    @java.lang.Override
+    public io.littlehorse.sdk.common.proto.EnableMetricRequest getEnableMetric() {
+      if (enableMetricBuilder_ == null) {
+        if (metadataCommandCase_ == 16) {
+          return (io.littlehorse.sdk.common.proto.EnableMetricRequest) metadataCommand_;
+        }
+        return io.littlehorse.sdk.common.proto.EnableMetricRequest.getDefaultInstance();
+      } else {
+        if (metadataCommandCase_ == 16) {
+          return enableMetricBuilder_.getMessage();
+        }
+        return io.littlehorse.sdk.common.proto.EnableMetricRequest.getDefaultInstance();
+      }
+    }
+    /**
+     * <pre>
+     * TODO: DeleteTenant
+     * </pre>
+     *
+     * <code>.littlehorse.EnableMetricRequest enable_metric = 16;</code>
+     */
+    public Builder setEnableMetric(io.littlehorse.sdk.common.proto.EnableMetricRequest value) {
+      if (enableMetricBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        metadataCommand_ = value;
+        onChanged();
+      } else {
+        enableMetricBuilder_.setMessage(value);
+      }
+      metadataCommandCase_ = 16;
+      return this;
+    }
+    /**
+     * <pre>
+     * TODO: DeleteTenant
+     * </pre>
+     *
+     * <code>.littlehorse.EnableMetricRequest enable_metric = 16;</code>
+     */
+    public Builder setEnableMetric(
+        io.littlehorse.sdk.common.proto.EnableMetricRequest.Builder builderForValue) {
+      if (enableMetricBuilder_ == null) {
+        metadataCommand_ = builderForValue.build();
+        onChanged();
+      } else {
+        enableMetricBuilder_.setMessage(builderForValue.build());
+      }
+      metadataCommandCase_ = 16;
+      return this;
+    }
+    /**
+     * <pre>
+     * TODO: DeleteTenant
+     * </pre>
+     *
+     * <code>.littlehorse.EnableMetricRequest enable_metric = 16;</code>
+     */
+    public Builder mergeEnableMetric(io.littlehorse.sdk.common.proto.EnableMetricRequest value) {
+      if (enableMetricBuilder_ == null) {
+        if (metadataCommandCase_ == 16 &&
+            metadataCommand_ != io.littlehorse.sdk.common.proto.EnableMetricRequest.getDefaultInstance()) {
+          metadataCommand_ = io.littlehorse.sdk.common.proto.EnableMetricRequest.newBuilder((io.littlehorse.sdk.common.proto.EnableMetricRequest) metadataCommand_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          metadataCommand_ = value;
+        }
+        onChanged();
+      } else {
+        if (metadataCommandCase_ == 16) {
+          enableMetricBuilder_.mergeFrom(value);
+        } else {
+          enableMetricBuilder_.setMessage(value);
+        }
+      }
+      metadataCommandCase_ = 16;
+      return this;
+    }
+    /**
+     * <pre>
+     * TODO: DeleteTenant
+     * </pre>
+     *
+     * <code>.littlehorse.EnableMetricRequest enable_metric = 16;</code>
+     */
+    public Builder clearEnableMetric() {
+      if (enableMetricBuilder_ == null) {
+        if (metadataCommandCase_ == 16) {
+          metadataCommandCase_ = 0;
+          metadataCommand_ = null;
+          onChanged();
+        }
+      } else {
+        if (metadataCommandCase_ == 16) {
+          metadataCommandCase_ = 0;
+          metadataCommand_ = null;
+        }
+        enableMetricBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * TODO: DeleteTenant
+     * </pre>
+     *
+     * <code>.littlehorse.EnableMetricRequest enable_metric = 16;</code>
+     */
+    public io.littlehorse.sdk.common.proto.EnableMetricRequest.Builder getEnableMetricBuilder() {
+      return getEnableMetricFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * TODO: DeleteTenant
+     * </pre>
+     *
+     * <code>.littlehorse.EnableMetricRequest enable_metric = 16;</code>
+     */
+    @java.lang.Override
+    public io.littlehorse.sdk.common.proto.EnableMetricRequestOrBuilder getEnableMetricOrBuilder() {
+      if ((metadataCommandCase_ == 16) && (enableMetricBuilder_ != null)) {
+        return enableMetricBuilder_.getMessageOrBuilder();
+      } else {
+        if (metadataCommandCase_ == 16) {
+          return (io.littlehorse.sdk.common.proto.EnableMetricRequest) metadataCommand_;
+        }
+        return io.littlehorse.sdk.common.proto.EnableMetricRequest.getDefaultInstance();
+      }
+    }
+    /**
+     * <pre>
+     * TODO: DeleteTenant
+     * </pre>
+     *
+     * <code>.littlehorse.EnableMetricRequest enable_metric = 16;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        io.littlehorse.sdk.common.proto.EnableMetricRequest, io.littlehorse.sdk.common.proto.EnableMetricRequest.Builder, io.littlehorse.sdk.common.proto.EnableMetricRequestOrBuilder> 
+        getEnableMetricFieldBuilder() {
+      if (enableMetricBuilder_ == null) {
+        if (!(metadataCommandCase_ == 16)) {
+          metadataCommand_ = io.littlehorse.sdk.common.proto.EnableMetricRequest.getDefaultInstance();
+        }
+        enableMetricBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            io.littlehorse.sdk.common.proto.EnableMetricRequest, io.littlehorse.sdk.common.proto.EnableMetricRequest.Builder, io.littlehorse.sdk.common.proto.EnableMetricRequestOrBuilder>(
+                (io.littlehorse.sdk.common.proto.EnableMetricRequest) metadataCommand_,
+                getParentForChildren(),
+                isClean());
+        metadataCommand_ = null;
+      }
+      metadataCommandCase_ = 16;
+      onChanged();
+      return enableMetricBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

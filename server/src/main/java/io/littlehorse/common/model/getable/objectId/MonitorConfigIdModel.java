@@ -8,9 +8,13 @@ import io.littlehorse.sdk.common.proto.MonitorConfig;
 import io.littlehorse.sdk.common.proto.MonitorConfigId;
 import io.littlehorse.server.monitoring.metrics.MonitorConfigModel;
 import io.littlehorse.server.streams.topology.core.ExecutionContext;
+import lombok.Getter;
 
+@Getter
 public class MonitorConfigIdModel extends MetadataId<MonitorConfigId, MonitorConfig, MonitorConfigModel> {
     private String id;
+
+    public MonitorConfigIdModel() {}
 
     public MonitorConfigIdModel(String id) {
         this.id = id;

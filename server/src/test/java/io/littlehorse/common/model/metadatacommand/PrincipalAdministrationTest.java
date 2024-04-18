@@ -269,8 +269,6 @@ public class PrincipalAdministrationTest {
     }
 
     private PutPrincipalRequest principalRequestToProcess() {
-        System.out.println("hi there");
-        System.out.println(this.principalId);
         return PutPrincipalRequest.newBuilder()
                 .setId(principalId)
                 .setOverwrite(false)

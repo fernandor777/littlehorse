@@ -15,6 +15,11 @@ export interface MonitorConfigId {
   id: string;
 }
 
+export interface EnableMetricRequest {
+  id: MonitorConfigId | undefined;
+  windowLengthMs: number;
+}
+
 function createBaseMonitorConfig(): MonitorConfig {
   return { id: undefined, windowLengthMs: 0, createdTime: undefined };
 }
@@ -157,6 +162,80 @@ export const MonitorConfigId = {
   fromPartial<I extends Exact<DeepPartial<MonitorConfigId>, I>>(object: I): MonitorConfigId {
     const message = createBaseMonitorConfigId();
     message.id = object.id ?? "";
+    return message;
+  },
+};
+
+function createBaseEnableMetricRequest(): EnableMetricRequest {
+  return { id: undefined, windowLengthMs: 0 };
+}
+
+export const EnableMetricRequest = {
+  encode(message: EnableMetricRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== undefined) {
+      MonitorConfigId.encode(message.id, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.windowLengthMs !== 0) {
+      writer.uint32(16).int64(message.windowLengthMs);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EnableMetricRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEnableMetricRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = MonitorConfigId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.windowLengthMs = longToNumber(reader.int64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EnableMetricRequest {
+    return {
+      id: isSet(object.id) ? MonitorConfigId.fromJSON(object.id) : undefined,
+      windowLengthMs: isSet(object.windowLengthMs) ? globalThis.Number(object.windowLengthMs) : 0,
+    };
+  },
+
+  toJSON(message: EnableMetricRequest): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = MonitorConfigId.toJSON(message.id);
+    }
+    if (message.windowLengthMs !== 0) {
+      obj.windowLengthMs = Math.round(message.windowLengthMs);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<EnableMetricRequest>, I>>(base?: I): EnableMetricRequest {
+    return EnableMetricRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<EnableMetricRequest>, I>>(object: I): EnableMetricRequest {
+    const message = createBaseEnableMetricRequest();
+    message.id = (object.id !== undefined && object.id !== null) ? MonitorConfigId.fromPartial(object.id) : undefined;
+    message.windowLengthMs = object.windowLengthMs ?? 0;
     return message;
   },
 };

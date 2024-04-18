@@ -24,6 +24,11 @@ public final class Metrics {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_littlehorse_MonitorConfigId_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_littlehorse_EnableMetricRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_littlehorse_EnableMetricRequest_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -34,20 +39,20 @@ public final class Metrics {
   static {
     java.lang.String[] descriptorData = {
       "\n\rmetrics.proto\022\013littlehorse\032\037google/pro" +
-      "tobuf/timestamp.proto\032\017object_id.proto\"\205" +
-      "\001\n\rMonitorConfig\022(\n\002id\030\001 \001(\0132\034.littlehor" +
-      "se.MonitorConfigId\022\030\n\020window_length_ms\030\002" +
-      " \001(\003\0220\n\014created_time\030\003 \001(\0132\032.google.prot" +
-      "obuf.Timestamp\"\035\n\017MonitorConfigId\022\n\n\002id\030" +
-      "\001 \001(\tBG\n\037io.littlehorse.sdk.common.proto" +
-      "P\001Z\007.;model\252\002\030LittleHorse.Common.Protob\006" +
-      "proto3"
+      "tobuf/timestamp.proto\"\205\001\n\rMonitorConfig\022" +
+      "(\n\002id\030\001 \001(\0132\034.littlehorse.MonitorConfigI" +
+      "d\022\030\n\020window_length_ms\030\002 \001(\003\0220\n\014created_t" +
+      "ime\030\003 \001(\0132\032.google.protobuf.Timestamp\"\035\n" +
+      "\017MonitorConfigId\022\n\n\002id\030\001 \001(\t\"Y\n\023EnableMe" +
+      "tricRequest\022(\n\002id\030\001 \001(\0132\034.littlehorse.Mo" +
+      "nitorConfigId\022\030\n\020window_length_ms\030\002 \001(\003B" +
+      "G\n\037io.littlehorse.sdk.common.protoP\001Z\007.;" +
+      "model\252\002\030LittleHorse.Common.Protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.google.protobuf.TimestampProto.getDescriptor(),
-          io.littlehorse.sdk.common.proto.ObjectId.getDescriptor(),
         });
     internal_static_littlehorse_MonitorConfig_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -61,8 +66,13 @@ public final class Metrics {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_littlehorse_MonitorConfigId_descriptor,
         new java.lang.String[] { "Id", });
+    internal_static_littlehorse_EnableMetricRequest_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_littlehorse_EnableMetricRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_littlehorse_EnableMetricRequest_descriptor,
+        new java.lang.String[] { "Id", "WindowLengthMs", });
     com.google.protobuf.TimestampProto.getDescriptor();
-    io.littlehorse.sdk.common.proto.ObjectId.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

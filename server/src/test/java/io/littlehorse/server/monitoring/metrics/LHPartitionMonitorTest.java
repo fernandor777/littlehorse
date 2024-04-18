@@ -2,6 +2,7 @@ package io.littlehorse.server.monitoring.metrics;
 
 import static org.assertj.core.api.Assertions.*;
 
+import io.littlehorse.common.model.getable.objectId.MonitorConfigIdModel;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -18,7 +19,7 @@ class LHPartitionMonitorTest {
 
     @Test
     public void shouldRegisterMetricConfig() {
-        String metricId = "DeletePrincipalCommand";
+        MonitorConfigIdModel metricId = new MonitorConfigIdModel("DeletePrincipalCommand");
         Duration windowLengthMs = Duration.ofHours(1);
         MonitorConfigModel config = new MonitorConfigModel(metricId, windowLengthMs);
         partitionMonitor.register(config);
@@ -42,7 +43,7 @@ class LHPartitionMonitorTest {
 
     @Test
     public void shouldAggregateMetricsByMonitorConfig() {
-        String metricId = "DeletePrincipalCommand";
+        MonitorConfigIdModel metricId = new MonitorConfigIdModel("DeletePrincipalCommand");
         Duration windowLengthMs = Duration.ofHours(1);
         MonitorConfigModel config = new MonitorConfigModel(metricId, windowLengthMs);
         partitionMonitor.register(config);
@@ -65,7 +66,7 @@ class LHPartitionMonitorTest {
 
     @Test
     public void shouldIgnoreMeasureWhenIfThereIsNoConfig() {
-        String metricId = "DeletePrincipalCommand";
+        MonitorConfigIdModel metricId = new MonitorConfigIdModel("DeletePrincipalCommand");
         UsageMeasure measure2 = new UsageMeasure(metricId, new Date());
         assertThat(partitionMonitor.isMetricEnabledFor(metricId)).isFalse();
         partitionMonitor.record(measure2);

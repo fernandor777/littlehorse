@@ -205,31 +205,46 @@ public interface MetadataCommandOrBuilder extends
   io.littlehorse.sdk.common.proto.PutTenantRequestOrBuilder getPutTenantOrBuilder();
 
   /**
-   * <pre>
-   * TODO: DeleteTenant
-   * </pre>
-   *
    * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
    * @return Whether the workflowEventDef field is set.
    */
   boolean hasWorkflowEventDef();
   /**
-   * <pre>
-   * TODO: DeleteTenant
-   * </pre>
-   *
    * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
    * @return The workflowEventDef.
    */
   io.littlehorse.sdk.common.proto.PutWorkflowEventDefRequest getWorkflowEventDef();
   /**
+   * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
+   */
+  io.littlehorse.sdk.common.proto.PutWorkflowEventDefRequestOrBuilder getWorkflowEventDefOrBuilder();
+
+  /**
    * <pre>
    * TODO: DeleteTenant
    * </pre>
    *
-   * <code>.littlehorse.PutWorkflowEventDefRequest workflow_event_def = 15;</code>
+   * <code>.littlehorse.EnableMetricRequest enable_metric = 16;</code>
+   * @return Whether the enableMetric field is set.
    */
-  io.littlehorse.sdk.common.proto.PutWorkflowEventDefRequestOrBuilder getWorkflowEventDefOrBuilder();
+  boolean hasEnableMetric();
+  /**
+   * <pre>
+   * TODO: DeleteTenant
+   * </pre>
+   *
+   * <code>.littlehorse.EnableMetricRequest enable_metric = 16;</code>
+   * @return The enableMetric.
+   */
+  io.littlehorse.sdk.common.proto.EnableMetricRequest getEnableMetric();
+  /**
+   * <pre>
+   * TODO: DeleteTenant
+   * </pre>
+   *
+   * <code>.littlehorse.EnableMetricRequest enable_metric = 16;</code>
+   */
+  io.littlehorse.sdk.common.proto.EnableMetricRequestOrBuilder getEnableMetricOrBuilder();
 
   io.littlehorse.common.proto.MetadataCommand.MetadataCommandCase getMetadataCommandCase();
 }

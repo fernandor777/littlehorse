@@ -17,3 +17,9 @@ message MonitorConfig {
 message MonitorConfigId {
 	string id = 1;
 }
+
+message EnableMetricRequest {
+	MonitorConfigId id = 1;
+	int64 window_length_ms = 2;
+}
+

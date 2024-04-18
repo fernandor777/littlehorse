@@ -1,5 +1,6 @@
 package io.littlehorse.server.monitoring.metrics;
 
+import io.littlehorse.common.model.getable.objectId.MonitorConfigIdModel;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ import javax.annotation.Nullable;
 
 public class LHPartitionMonitor {
     private final Map<String, UsageMetric> metrics = new HashMap<>();
-    private final Map<String, MonitorConfigModel> configs = new HashMap<>();
+    private final Map<MonitorConfigIdModel, MonitorConfigModel> configs = new HashMap<>();
 
     public void record(final UsageMeasure usageMeasure) {
         UsageMetric currentMetric = metrics.get(usageMeasure.id());
@@ -22,7 +23,7 @@ public class LHPartitionMonitor {
         metricOrEmpty.ifPresent(usageMetric -> metrics.put(usageMeasure.id(), usageMetric));
     }
 
-    public Optional<UsageMetric> getMetric(String metricId) {
+    public Optional<UsageMetric> getMetric(MonitorConfigIdModel metricId) {
         return Optional.ofNullable(metrics.get(metricId));
     }
 
@@ -30,7 +31,7 @@ public class LHPartitionMonitor {
         configs.put(config.getMetricId(), config);
     }
 
-    public boolean isMetricEnabledFor(String metricId) {
+    public boolean isMetricEnabledFor(MonitorConfigIdModel metricId) {
         return configs.containsKey(metricId);
     }
 
@@ -48,7 +49,7 @@ public class LHPartitionMonitor {
         LocalDateTime windowEndLocalTime = calculateWindowEnd(windowStart, config.getWindowLength());
         Date windowEnd =
                 Date.from(windowEndLocalTime.toInstant(OffsetDateTime.now().getOffset()));
-        return Optional.of(new UsageMetric(config.getMetricId(), 1L, windowStart, windowEnd));
+        return Optional.of(new UsageMetric(config.getMetricId().getId(), 1L, windowStart, windowEnd));
     }
 
     //
