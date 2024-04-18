@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Optional;
+import org.apache.kafka.streams.processor.TaskId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -18,7 +19,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class LHPartitionMonitorTest {
 
-    private final LHPartitionMonitor partitionMonitor = new LHPartitionMonitor();
+    private final TaskId task = TaskId.parse("0_1");
+    private final LHPartitionMonitor partitionMonitor = new LHPartitionMonitor(task);
     private final ProcessorExecutionContext mockContext = Mockito.mock();
     private final ReadOnlyMetadataManager mockMetadataManager = Mockito.mock();
 

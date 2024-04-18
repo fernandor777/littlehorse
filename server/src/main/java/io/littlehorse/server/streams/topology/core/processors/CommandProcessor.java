@@ -78,7 +78,7 @@ public class CommandProcessor implements Processor<String, Command, String, Comm
         this.globalStore = ctx.getStateStore(ServerTopology.GLOBAL_METADATA_STORE);
         onPartitionClaimed();
         ctx.schedule(Duration.ofSeconds(30), PunctuationType.WALL_CLOCK_TIME, this::forwardMetricsUpdates);
-        monitor = new LHPartitionMonitor();
+        monitor = new LHPartitionMonitor(ctx.taskId());
     }
 
     @Override
@@ -136,12 +136,10 @@ public class CommandProcessor implements Processor<String, Command, String, Comm
             // let the sysadmin of this LH Server know, and provide as much debugging
             // information as possible.
         } finally {
-            monitor.record(
-                    new UsageMeasure(
-                            new MonitorConfigIdModel(
-                                    command.getSubCommand().getClass().getSimpleName()),
-                            command.getTime()),
-                    executionContext);
+            MonitorConfigIdModel monitorConfigId =
+                    new MonitorConfigIdModel(command.getSubCommand().getClass().getSimpleName());
+            UsageMeasure measure = new UsageMeasure(monitorConfigId, command.getTime());
+            monitor.record(measure, executionContext);
         }
     }
 

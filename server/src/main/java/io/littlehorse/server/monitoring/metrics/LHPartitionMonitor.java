@@ -12,10 +12,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nullable;
+import org.apache.kafka.streams.processor.TaskId;
 
 public class LHPartitionMonitor {
+    private final TaskId taskId;
+
     private final Map<MonitorConfigIdModel, UsageMetric> metrics = new HashMap<>();
     private final Map<MonitorConfigIdModel, MonitorConfigModel> configs = new HashMap<>();
+
+    public LHPartitionMonitor(TaskId taskId) {
+        this.taskId = taskId;
+    }
 
     public void record(final UsageMeasure usageMeasure, ProcessorExecutionContext context) {
         UsageMetric currentMetric = metrics.get(usageMeasure.id());
