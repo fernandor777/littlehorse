@@ -20,6 +20,7 @@ import io.littlehorse.common.model.getable.global.wfspec.WfSpecModel;
 import io.littlehorse.common.model.getable.global.wfspec.node.subnode.usertasks.UserTaskDefModel;
 import io.littlehorse.common.model.getable.objectId.ExternalEventDefIdModel;
 import io.littlehorse.common.model.getable.objectId.ExternalEventIdModel;
+import io.littlehorse.common.model.getable.objectId.MonitorConfigIdModel;
 import io.littlehorse.common.model.getable.objectId.NodeRunIdModel;
 import io.littlehorse.common.model.getable.objectId.PrincipalIdModel;
 import io.littlehorse.common.model.getable.objectId.TaskDefIdModel;
@@ -40,6 +41,8 @@ import io.littlehorse.common.model.getable.repartitioned.workflowmetrics.WfSpecM
 import io.littlehorse.common.proto.GetableClassEnum;
 import io.littlehorse.common.proto.TagStorageType;
 import io.littlehorse.common.util.LHUtil;
+import io.littlehorse.sdk.common.proto.MonitorConfig;
+import io.littlehorse.server.monitoring.metrics.MonitorConfigModel;
 import io.littlehorse.server.streams.storeinternals.GetableIndex;
 import io.littlehorse.server.streams.storeinternals.index.IndexedField;
 import io.littlehorse.server.streams.storeinternals.index.Tag;
@@ -97,6 +100,8 @@ public abstract class AbstractGetable<T extends Message> extends LHSerializable<
             return GetableClassEnum.WORKFLOW_EVENT_DEF;
         } else if (cls.equals(WorkflowEventModel.class)) {
             return GetableClassEnum.WORKFLOW_EVENT;
+        } else if (cls.equals(MonitorConfigModel.class)) {
+            return GetableClassEnum.MONITOR_CONFIG;
         } else {
             throw new IllegalArgumentException("Uh oh, unrecognized: " + cls.getName());
         }
@@ -138,6 +143,8 @@ public abstract class AbstractGetable<T extends Message> extends LHSerializable<
                 return WorkflowEventDefModel.class;
             case WORKFLOW_EVENT:
                 return WorkflowEventModel.class;
+            case MONITOR_CONFIG:
+                return MonitorConfigModel.class;
             case UNRECOGNIZED:
                 // default:
         }
@@ -180,6 +187,8 @@ public abstract class AbstractGetable<T extends Message> extends LHSerializable<
                 return WorkflowEventDefIdModel.class;
             case WORKFLOW_EVENT:
                 return WorkflowEventIdModel.class;
+            case MONITOR_CONFIG:
+                return MonitorConfigIdModel.class;
             case UNRECOGNIZED:
         }
         throw new IllegalArgumentException("Unrecognized/unimplemented GetableClassEnum");

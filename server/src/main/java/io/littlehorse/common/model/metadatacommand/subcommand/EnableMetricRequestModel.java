@@ -39,12 +39,13 @@ public class EnableMetricRequestModel extends MetadataSubCommand<EnableMetricReq
 
     @Override
     public boolean hasResponse() {
-        return false;
+        return true;
     }
 
     @Override
     public Message process(MetadataCommandExecution executionContext) {
         MonitorConfigModel monitorConfig = new MonitorConfigModel(id, Duration.ofMillis(windowLengthMs));
-        return null;
+        executionContext.metadataManager().put(monitorConfig);
+        return monitorConfig.toProto().build();
     }
 }

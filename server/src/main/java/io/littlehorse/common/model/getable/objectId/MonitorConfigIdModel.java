@@ -10,6 +10,8 @@ import io.littlehorse.server.monitoring.metrics.MonitorConfigModel;
 import io.littlehorse.server.streams.topology.core.ExecutionContext;
 import lombok.Getter;
 
+import java.util.Objects;
+
 @Getter
 public class MonitorConfigIdModel extends MetadataId<MonitorConfigId, MonitorConfig, MonitorConfigModel> {
     private String id;
@@ -49,5 +51,18 @@ public class MonitorConfigIdModel extends MetadataId<MonitorConfigId, MonitorCon
     @Override
     public GetableClassEnum getType() {
         return GetableClassEnum.MONITOR_CONFIG;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MonitorConfigIdModel that)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id);
     }
 }

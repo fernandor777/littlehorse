@@ -28,8 +28,8 @@ class LHPartitionMonitorTest {
 
     @Test
     public void shouldCalculateMetricUsagePerId() {
-        String metricId1 = "RunWfCommand";
-        String metricId2 = "ReportTaskRun";
+        MonitorConfigIdModel metricId1 = new MonitorConfigIdModel("RunWfCommand");
+        MonitorConfigIdModel metricId2 = new MonitorConfigIdModel("ReportTaskRun");
         UsageMeasure measure1 = new UsageMeasure(metricId1, new Date());
         UsageMeasure measure2 = new UsageMeasure(metricId1, new Date());
         UsageMeasure measure3 = new UsageMeasure(metricId2, new Date());

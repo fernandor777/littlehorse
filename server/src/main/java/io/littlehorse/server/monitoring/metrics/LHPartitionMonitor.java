@@ -13,7 +13,7 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 public class LHPartitionMonitor {
-    private final Map<String, UsageMetric> metrics = new HashMap<>();
+    private final Map<MonitorConfigIdModel, UsageMetric> metrics = new HashMap<>();
     private final Map<MonitorConfigIdModel, MonitorConfigModel> configs = new HashMap<>();
 
     public void record(final UsageMeasure usageMeasure) {
