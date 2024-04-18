@@ -1813,6 +1813,37 @@ public final class LittleHorseGrpc {
     return getGetServerVersionMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<io.littlehorse.sdk.common.proto.EnableMetricRequest,
+      io.littlehorse.sdk.common.proto.MonitorConfig> getEnableMetricMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "EnableMetric",
+      requestType = io.littlehorse.sdk.common.proto.EnableMetricRequest.class,
+      responseType = io.littlehorse.sdk.common.proto.MonitorConfig.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<io.littlehorse.sdk.common.proto.EnableMetricRequest,
+      io.littlehorse.sdk.common.proto.MonitorConfig> getEnableMetricMethod() {
+    io.grpc.MethodDescriptor<io.littlehorse.sdk.common.proto.EnableMetricRequest, io.littlehorse.sdk.common.proto.MonitorConfig> getEnableMetricMethod;
+    if ((getEnableMetricMethod = LittleHorseGrpc.getEnableMetricMethod) == null) {
+      synchronized (LittleHorseGrpc.class) {
+        if ((getEnableMetricMethod = LittleHorseGrpc.getEnableMetricMethod) == null) {
+          LittleHorseGrpc.getEnableMetricMethod = getEnableMetricMethod =
+              io.grpc.MethodDescriptor.<io.littlehorse.sdk.common.proto.EnableMetricRequest, io.littlehorse.sdk.common.proto.MonitorConfig>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "EnableMetric"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.littlehorse.sdk.common.proto.EnableMetricRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.littlehorse.sdk.common.proto.MonitorConfig.getDefaultInstance()))
+              .setSchemaDescriptor(new LittleHorseMethodDescriptorSupplier("EnableMetric"))
+              .build();
+        }
+      }
+    }
+    return getEnableMetricMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -2473,6 +2504,13 @@ public final class LittleHorseGrpc {
     default void getServerVersion(com.google.protobuf.Empty request,
         io.grpc.stub.StreamObserver<io.littlehorse.sdk.common.proto.ServerVersionResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetServerVersionMethod(), responseObserver);
+    }
+
+    /**
+     */
+    default void enableMetric(io.littlehorse.sdk.common.proto.EnableMetricRequest request,
+        io.grpc.stub.StreamObserver<io.littlehorse.sdk.common.proto.MonitorConfig> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getEnableMetricMethod(), responseObserver);
     }
   }
 
@@ -3174,6 +3212,14 @@ public final class LittleHorseGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetServerVersionMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void enableMetric(io.littlehorse.sdk.common.proto.EnableMetricRequest request,
+        io.grpc.stub.StreamObserver<io.littlehorse.sdk.common.proto.MonitorConfig> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getEnableMetricMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -3793,6 +3839,13 @@ public final class LittleHorseGrpc {
     public io.littlehorse.sdk.common.proto.ServerVersionResponse getServerVersion(com.google.protobuf.Empty request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetServerVersionMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public io.littlehorse.sdk.common.proto.MonitorConfig enableMetric(io.littlehorse.sdk.common.proto.EnableMetricRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getEnableMetricMethod(), getCallOptions(), request);
     }
   }
 
@@ -4471,6 +4524,14 @@ public final class LittleHorseGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetServerVersionMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<io.littlehorse.sdk.common.proto.MonitorConfig> enableMetric(
+        io.littlehorse.sdk.common.proto.EnableMetricRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getEnableMetricMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_PUT_TASK_DEF = 0;
@@ -4530,7 +4591,8 @@ public final class LittleHorseGrpc {
   private static final int METHODID_PUT_PRINCIPAL = 54;
   private static final int METHODID_WHOAMI = 55;
   private static final int METHODID_GET_SERVER_VERSION = 56;
-  private static final int METHODID_POLL_TASK = 57;
+  private static final int METHODID_ENABLE_METRIC = 57;
+  private static final int METHODID_POLL_TASK = 58;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -4776,6 +4838,10 @@ public final class LittleHorseGrpc {
         case METHODID_GET_SERVER_VERSION:
           serviceImpl.getServerVersion((com.google.protobuf.Empty) request,
               (io.grpc.stub.StreamObserver<io.littlehorse.sdk.common.proto.ServerVersionResponse>) responseObserver);
+          break;
+        case METHODID_ENABLE_METRIC:
+          serviceImpl.enableMetric((io.littlehorse.sdk.common.proto.EnableMetricRequest) request,
+              (io.grpc.stub.StreamObserver<io.littlehorse.sdk.common.proto.MonitorConfig>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -5204,6 +5270,13 @@ public final class LittleHorseGrpc {
               com.google.protobuf.Empty,
               io.littlehorse.sdk.common.proto.ServerVersionResponse>(
                 service, METHODID_GET_SERVER_VERSION)))
+        .addMethod(
+          getEnableMetricMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              io.littlehorse.sdk.common.proto.EnableMetricRequest,
+              io.littlehorse.sdk.common.proto.MonitorConfig>(
+                service, METHODID_ENABLE_METRIC)))
         .build();
   }
 
@@ -5310,6 +5383,7 @@ public final class LittleHorseGrpc {
               .addMethod(getPutPrincipalMethod())
               .addMethod(getWhoamiMethod())
               .addMethod(getGetServerVersionMethod())
+              .addMethod(getEnableMetricMethod())
               .build();
         }
       }

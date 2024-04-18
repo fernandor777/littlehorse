@@ -54,6 +54,7 @@ import io.littlehorse.common.model.metadatacommand.subcommand.DeleteExternalEven
 import io.littlehorse.common.model.metadatacommand.subcommand.DeleteTaskDefRequestModel;
 import io.littlehorse.common.model.metadatacommand.subcommand.DeleteUserTaskDefRequestModel;
 import io.littlehorse.common.model.metadatacommand.subcommand.DeleteWfSpecRequestModel;
+import io.littlehorse.common.model.metadatacommand.subcommand.EnableMetricRequestModel;
 import io.littlehorse.common.model.metadatacommand.subcommand.MigrateWfSpecRequestModel;
 import io.littlehorse.common.model.metadatacommand.subcommand.PutExternalEventDefRequestModel;
 import io.littlehorse.common.model.metadatacommand.subcommand.PutPrincipalRequestModel;
@@ -77,6 +78,7 @@ import io.littlehorse.sdk.common.proto.DeleteTaskDefRequest;
 import io.littlehorse.sdk.common.proto.DeleteUserTaskDefRequest;
 import io.littlehorse.sdk.common.proto.DeleteWfRunRequest;
 import io.littlehorse.sdk.common.proto.DeleteWfSpecRequest;
+import io.littlehorse.sdk.common.proto.EnableMetricRequest;
 import io.littlehorse.sdk.common.proto.ExternalEvent;
 import io.littlehorse.sdk.common.proto.ExternalEventDef;
 import io.littlehorse.sdk.common.proto.ExternalEventDefId;
@@ -98,6 +100,7 @@ import io.littlehorse.sdk.common.proto.ListWfMetricsRequest;
 import io.littlehorse.sdk.common.proto.ListWfMetricsResponse;
 import io.littlehorse.sdk.common.proto.LittleHorseGrpc.LittleHorseImplBase;
 import io.littlehorse.sdk.common.proto.MigrateWfSpecRequest;
+import io.littlehorse.sdk.common.proto.MonitorConfig;
 import io.littlehorse.sdk.common.proto.NodeRun;
 import io.littlehorse.sdk.common.proto.NodeRunId;
 import io.littlehorse.sdk.common.proto.NodeRunIdList;
@@ -836,6 +839,12 @@ public class KafkaStreamsServerImpl extends LittleHorseImplBase {
                 .setPatchVersion(1)
                 .build());
         ctx.onCompleted();
+    }
+
+    @Override
+    public void enableMetric(EnableMetricRequest req, StreamObserver<MonitorConfig> responseObserver) {
+        EnableMetricRequestModel emrq = LHSerializable.fromProto(req, EnableMetricRequestModel.class, requestContext());
+        processCommand(new MetadataCommandModel(emrq), responseObserver, MonitorConfig.class, true);
     }
 
     /*

@@ -5,6 +5,7 @@ import grpc
 import littlehorse.model.acls_pb2 as acls__pb2
 import littlehorse.model.external_event_pb2 as external__event__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
+import littlehorse.model.metrics_pb2 as metrics__pb2
 import littlehorse.model.node_run_pb2 as node__run__pb2
 import littlehorse.model.object_id_pb2 as object__id__pb2
 import littlehorse.model.service_pb2 as service__pb2
@@ -315,6 +316,11 @@ class LittleHorseStub(object):
                 '/littlehorse.LittleHorse/GetServerVersion',
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
                 response_deserializer=service__pb2.ServerVersionResponse.FromString,
+                )
+        self.EnableMetric = channel.unary_unary(
+                '/littlehorse.LittleHorse/EnableMetric',
+                request_serializer=metrics__pb2.EnableMetricRequest.SerializeToString,
+                response_deserializer=metrics__pb2.MonitorConfig.FromString,
                 )
 
 
@@ -765,6 +771,12 @@ class LittleHorseServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def EnableMetric(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_LittleHorseServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -1057,6 +1069,11 @@ def add_LittleHorseServicer_to_server(servicer, server):
                     servicer.GetServerVersion,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                     response_serializer=service__pb2.ServerVersionResponse.SerializeToString,
+            ),
+            'EnableMetric': grpc.unary_unary_rpc_method_handler(
+                    servicer.EnableMetric,
+                    request_deserializer=metrics__pb2.EnableMetricRequest.FromString,
+                    response_serializer=metrics__pb2.MonitorConfig.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -2051,5 +2068,22 @@ class LittleHorse(object):
         return grpc.experimental.unary_unary(request, target, '/littlehorse.LittleHorse/GetServerVersion',
             google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             service__pb2.ServerVersionResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def EnableMetric(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/littlehorse.LittleHorse/EnableMetric',
+            metrics__pb2.EnableMetricRequest.SerializeToString,
+            metrics__pb2.MonitorConfig.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

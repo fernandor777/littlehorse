@@ -21,6 +21,7 @@ import { VariableDef } from "./common_wfspec";
 import { ExternalEvent, ExternalEventDef, ExternalEventRetentionPolicy } from "./external_event";
 import { Empty } from "./google/protobuf/empty";
 import { Timestamp } from "./google/protobuf/timestamp";
+import { EnableMetricRequest, MonitorConfig } from "./metrics";
 import { NodeRun } from "./node_run";
 import {
   ExternalEventDefId,
@@ -6823,6 +6824,14 @@ export const LittleHorseDefinition = {
       responseStream: false,
       options: {},
     },
+    enableMetric: {
+      name: "EnableMetric",
+      requestType: EnableMetricRequest,
+      requestStream: false,
+      responseType: MonitorConfig,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -7103,6 +7112,10 @@ export interface LittleHorseServiceImplementation<CallContextExt = {}> {
   whoami(request: Empty, context: CallContext & CallContextExt): Promise<DeepPartial<Principal>>;
   /** Gets the version of the LH Server. */
   getServerVersion(request: Empty, context: CallContext & CallContextExt): Promise<DeepPartial<ServerVersionResponse>>;
+  enableMetric(
+    request: EnableMetricRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<MonitorConfig>>;
 }
 
 export interface LittleHorseClient<CallOptionsExt = {}> {
@@ -7391,6 +7404,10 @@ export interface LittleHorseClient<CallOptionsExt = {}> {
   whoami(request: DeepPartial<Empty>, options?: CallOptions & CallOptionsExt): Promise<Principal>;
   /** Gets the version of the LH Server. */
   getServerVersion(request: DeepPartial<Empty>, options?: CallOptions & CallOptionsExt): Promise<ServerVersionResponse>;
+  enableMetric(
+    request: DeepPartial<EnableMetricRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<MonitorConfig>;
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

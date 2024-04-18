@@ -17,6 +17,7 @@ import "wf_spec.proto";
 import "task_def.proto";
 import "acls.proto";
 import "workflow_event.proto";
+import "metrics.proto";
 
 option go_package = ".;model";
 option java_multiple_files = true;
@@ -225,6 +226,8 @@ service LittleHorse {
 
   // Gets the version of the LH Server.
   rpc GetServerVersion(google.protobuf.Empty) returns (ServerVersionResponse) {}
+
+  rpc EnableMetric(EnableMetricRequest) returns (MonitorConfig) {}
 }
 
 // Returns the UserTaskDef with a given name and the highest version number.

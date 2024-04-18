@@ -24,9 +24,7 @@ public class MonitorConfigModel extends MetadataGetable<MonitorConfig> {
     private Duration windowLength;
     private Date createdTime;
 
-    public MonitorConfigModel() {
-
-    }
+    public MonitorConfigModel() {}
 
     public MonitorConfigModel(MonitorConfigIdModel metricId, Duration windowLength) {
         this.metricId = metricId;

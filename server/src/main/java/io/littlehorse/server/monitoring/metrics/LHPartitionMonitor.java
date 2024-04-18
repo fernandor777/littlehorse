@@ -1,6 +1,7 @@
 package io.littlehorse.server.monitoring.metrics;
 
 import io.littlehorse.common.model.getable.objectId.MonitorConfigIdModel;
+import io.littlehorse.server.streams.topology.core.ProcessorExecutionContext;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -16,11 +17,21 @@ public class LHPartitionMonitor {
     private final Map<MonitorConfigIdModel, UsageMetric> metrics = new HashMap<>();
     private final Map<MonitorConfigIdModel, MonitorConfigModel> configs = new HashMap<>();
 
-    public void record(final UsageMeasure usageMeasure) {
+    public void record(final UsageMeasure usageMeasure, ProcessorExecutionContext context) {
         UsageMetric currentMetric = metrics.get(usageMeasure.id());
-        Optional<UsageMetric> metricOrEmpty =
-                calculateMetricFor(configs.get(usageMeasure.id()), currentMetric, usageMeasure.createdOn());
-        metricOrEmpty.ifPresent(usageMetric -> metrics.put(usageMeasure.id(), usageMetric));
+        MonitorConfigModel metricConfig = resolveMonitorConfig(usageMeasure.id(), context);
+        Optional<UsageMetric> metricOrEmpty = calculateMetricFor(metricConfig, currentMetric, usageMeasure.createdOn());
+
+        metricOrEmpty.ifPresentOrElse(
+                usageMetric -> metrics.put(usageMeasure.id(), usageMetric),
+                () -> System.out.println(
+                        "well, not found for " + usageMeasure.id().getId()));
+    }
+
+    private MonitorConfigModel resolveMonitorConfig(MonitorConfigIdModel metricId, ProcessorExecutionContext context) {
+        return configs.get(metricId) != null
+                ? configs.get(metricId)
+                : context.metadataManager().get(metricId);
     }
 
     public Optional<UsageMetric> getMetric(MonitorConfigIdModel metricId) {
@@ -31,8 +42,8 @@ public class LHPartitionMonitor {
         configs.put(config.getMetricId(), config);
     }
 
-    public boolean isMetricEnabledFor(MonitorConfigIdModel metricId) {
-        return configs.containsKey(metricId);
+    public boolean isMetricEnabledFor(MonitorConfigIdModel metricId, ProcessorExecutionContext context) {
+        return resolveMonitorConfig(metricId, context) != null;
     }
 
     public Optional<UsageMetric> calculateMetricFor(
@@ -40,6 +51,7 @@ public class LHPartitionMonitor {
         if (config == null) {
             return Optional.empty();
         }
+        configs.putIfAbsent(config.getMetricId(), config);
         if (currentMetric != null && currentMetric.isStillActive(measureTime)) {
             currentMetric.increment();
             return Optional.of(currentMetric);
