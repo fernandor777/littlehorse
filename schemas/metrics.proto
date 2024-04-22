@@ -2,6 +2,7 @@ syntax = "proto3";
 package littlehorse;
 
 import "google/protobuf/timestamp.proto";
+import "object_id.proto";
 
 option go_package = ".;model";
 option java_multiple_files = true;
@@ -16,6 +17,7 @@ message MonitorConfig {
 
 message MonitorConfigId {
 	string id = 1;
+	TenantId tenant_id = 2;
 }
 
 message EnableMetricRequest {
@@ -23,3 +25,18 @@ message EnableMetricRequest {
 	int64 window_length_ms = 2;
 }
 
+message LHPartitionMonitor {
+	repeated LHTenantPartitionMonitor tenant_partitions = 1;
+}
+
+message LHTenantPartitionMonitor {
+	TenantId id = 1;
+	repeated UsageMetric metrics = 3;
+}
+
+message UsageMetric {
+	string id = 1;
+	int64 value = 2;
+	google.protobuf.Timestamp window_start = 3;
+	google.protobuf.Timestamp window_end = 4;
+}

@@ -78,6 +78,32 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int TENANT_ID_FIELD_NUMBER = 2;
+  private io.littlehorse.sdk.common.proto.TenantId tenantId_;
+  /**
+   * <code>.littlehorse.TenantId tenant_id = 2;</code>
+   * @return Whether the tenantId field is set.
+   */
+  @java.lang.Override
+  public boolean hasTenantId() {
+    return tenantId_ != null;
+  }
+  /**
+   * <code>.littlehorse.TenantId tenant_id = 2;</code>
+   * @return The tenantId.
+   */
+  @java.lang.Override
+  public io.littlehorse.sdk.common.proto.TenantId getTenantId() {
+    return tenantId_ == null ? io.littlehorse.sdk.common.proto.TenantId.getDefaultInstance() : tenantId_;
+  }
+  /**
+   * <code>.littlehorse.TenantId tenant_id = 2;</code>
+   */
+  @java.lang.Override
+  public io.littlehorse.sdk.common.proto.TenantIdOrBuilder getTenantIdOrBuilder() {
+    return tenantId_ == null ? io.littlehorse.sdk.common.proto.TenantId.getDefaultInstance() : tenantId_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -95,6 +121,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(id_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
     }
+    if (tenantId_ != null) {
+      output.writeMessage(2, getTenantId());
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -106,6 +135,10 @@ private static final long serialVersionUID = 0L;
     size = 0;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(id_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
+    }
+    if (tenantId_ != null) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(2, getTenantId());
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -124,6 +157,11 @@ private static final long serialVersionUID = 0L;
 
     if (!getId()
         .equals(other.getId())) return false;
+    if (hasTenantId() != other.hasTenantId()) return false;
+    if (hasTenantId()) {
+      if (!getTenantId()
+          .equals(other.getTenantId())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -137,6 +175,10 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + ID_FIELD_NUMBER;
     hash = (53 * hash) + getId().hashCode();
+    if (hasTenantId()) {
+      hash = (37 * hash) + TENANT_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getTenantId().hashCode();
+    }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -269,6 +311,11 @@ private static final long serialVersionUID = 0L;
       super.clear();
       bitField0_ = 0;
       id_ = "";
+      tenantId_ = null;
+      if (tenantIdBuilder_ != null) {
+        tenantIdBuilder_.dispose();
+        tenantIdBuilder_ = null;
+      }
       return this;
     }
 
@@ -304,6 +351,11 @@ private static final long serialVersionUID = 0L;
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
         result.id_ = id_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.tenantId_ = tenantIdBuilder_ == null
+            ? tenantId_
+            : tenantIdBuilder_.build();
       }
     }
 
@@ -356,6 +408,9 @@ private static final long serialVersionUID = 0L;
         bitField0_ |= 0x00000001;
         onChanged();
       }
+      if (other.hasTenantId()) {
+        mergeTenantId(other.getTenantId());
+      }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -387,6 +442,13 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000001;
               break;
             } // case 10
+            case 18: {
+              input.readMessage(
+                  getTenantIdFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -474,6 +536,125 @@ private static final long serialVersionUID = 0L;
       bitField0_ |= 0x00000001;
       onChanged();
       return this;
+    }
+
+    private io.littlehorse.sdk.common.proto.TenantId tenantId_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        io.littlehorse.sdk.common.proto.TenantId, io.littlehorse.sdk.common.proto.TenantId.Builder, io.littlehorse.sdk.common.proto.TenantIdOrBuilder> tenantIdBuilder_;
+    /**
+     * <code>.littlehorse.TenantId tenant_id = 2;</code>
+     * @return Whether the tenantId field is set.
+     */
+    public boolean hasTenantId() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>.littlehorse.TenantId tenant_id = 2;</code>
+     * @return The tenantId.
+     */
+    public io.littlehorse.sdk.common.proto.TenantId getTenantId() {
+      if (tenantIdBuilder_ == null) {
+        return tenantId_ == null ? io.littlehorse.sdk.common.proto.TenantId.getDefaultInstance() : tenantId_;
+      } else {
+        return tenantIdBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>.littlehorse.TenantId tenant_id = 2;</code>
+     */
+    public Builder setTenantId(io.littlehorse.sdk.common.proto.TenantId value) {
+      if (tenantIdBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        tenantId_ = value;
+      } else {
+        tenantIdBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.littlehorse.TenantId tenant_id = 2;</code>
+     */
+    public Builder setTenantId(
+        io.littlehorse.sdk.common.proto.TenantId.Builder builderForValue) {
+      if (tenantIdBuilder_ == null) {
+        tenantId_ = builderForValue.build();
+      } else {
+        tenantIdBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.littlehorse.TenantId tenant_id = 2;</code>
+     */
+    public Builder mergeTenantId(io.littlehorse.sdk.common.proto.TenantId value) {
+      if (tenantIdBuilder_ == null) {
+        if (((bitField0_ & 0x00000002) != 0) &&
+          tenantId_ != null &&
+          tenantId_ != io.littlehorse.sdk.common.proto.TenantId.getDefaultInstance()) {
+          getTenantIdBuilder().mergeFrom(value);
+        } else {
+          tenantId_ = value;
+        }
+      } else {
+        tenantIdBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.littlehorse.TenantId tenant_id = 2;</code>
+     */
+    public Builder clearTenantId() {
+      bitField0_ = (bitField0_ & ~0x00000002);
+      tenantId_ = null;
+      if (tenantIdBuilder_ != null) {
+        tenantIdBuilder_.dispose();
+        tenantIdBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.littlehorse.TenantId tenant_id = 2;</code>
+     */
+    public io.littlehorse.sdk.common.proto.TenantId.Builder getTenantIdBuilder() {
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return getTenantIdFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.littlehorse.TenantId tenant_id = 2;</code>
+     */
+    public io.littlehorse.sdk.common.proto.TenantIdOrBuilder getTenantIdOrBuilder() {
+      if (tenantIdBuilder_ != null) {
+        return tenantIdBuilder_.getMessageOrBuilder();
+      } else {
+        return tenantId_ == null ?
+            io.littlehorse.sdk.common.proto.TenantId.getDefaultInstance() : tenantId_;
+      }
+    }
+    /**
+     * <code>.littlehorse.TenantId tenant_id = 2;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        io.littlehorse.sdk.common.proto.TenantId, io.littlehorse.sdk.common.proto.TenantId.Builder, io.littlehorse.sdk.common.proto.TenantIdOrBuilder> 
+        getTenantIdFieldBuilder() {
+      if (tenantIdBuilder_ == null) {
+        tenantIdBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            io.littlehorse.sdk.common.proto.TenantId, io.littlehorse.sdk.common.proto.TenantId.Builder, io.littlehorse.sdk.common.proto.TenantIdOrBuilder>(
+                getTenantId(),
+                getParentForChildren(),
+                isClean());
+        tenantId_ = null;
+      }
+      return tenantIdBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

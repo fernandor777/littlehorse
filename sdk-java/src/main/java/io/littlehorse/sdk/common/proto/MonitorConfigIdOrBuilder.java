@@ -18,4 +18,19 @@ public interface MonitorConfigIdOrBuilder extends
    */
   com.google.protobuf.ByteString
       getIdBytes();
+
+  /**
+   * <code>.littlehorse.TenantId tenant_id = 2;</code>
+   * @return Whether the tenantId field is set.
+   */
+  boolean hasTenantId();
+  /**
+   * <code>.littlehorse.TenantId tenant_id = 2;</code>
+   * @return The tenantId.
+   */
+  io.littlehorse.sdk.common.proto.TenantId getTenantId();
+  /**
+   * <code>.littlehorse.TenantId tenant_id = 2;</code>
+   */
+  io.littlehorse.sdk.common.proto.TenantIdOrBuilder getTenantIdOrBuilder();
 }

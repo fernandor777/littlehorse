@@ -53,7 +53,7 @@ class EnableMetricRequestModelTest {
 
     private ExecutionContext executionContext = Mockito.mock(Answers.RETURNS_DEEP_STUBS);
     private final String metricId = "I'm a metric";
-    private final String tenantId = "A";
+    private final TenantIdModel tenantId = new TenantIdModel("A");
     private final String principalId = "pedro";
 
     private final MockProcessorContext<String, Bytes> mockProcessorContext = new MockProcessorContext<>();
@@ -62,7 +62,7 @@ class EnableMetricRequestModelTest {
 
     private final ReadOnlyMetadataManager metadataManager = new ReadOnlyMetadataManager(
             ClusterScopedStore.newInstance(nativeMetadataStore, executionContext),
-            TenantScopedStore.newInstance(nativeMetadataStore, new TenantIdModel(tenantId), executionContext),
+            TenantScopedStore.newInstance(nativeMetadataStore, tenantId, executionContext),
             metadataCache);
     private final EnableMetricRequestModel enableMetricCommand =
             LHSerializable.fromProto(buildEnableMetricRequest(), EnableMetricRequestModel.class, executionContext);
@@ -76,7 +76,7 @@ class EnableMetricRequestModelTest {
     @Test
     public void shouldEnableMetric() {
         sendCommand(enableMetricCommand);
-        MonitorConfigModel monitorConfig = metadataManager.get(new MonitorConfigIdModel(metricId));
+        MonitorConfigModel monitorConfig = metadataManager.get(new MonitorConfigIdModel(metricId, tenantId));
         assertThat(monitorConfig).isNotNull();
         assertThat(monitorConfig.getMetricId().getId()).isEqualTo(metricId);
         assertThat(monitorConfig.getCreatedAt()).isInThePast();
@@ -92,7 +92,7 @@ class EnableMetricRequestModelTest {
 
     private MetadataCommandModel sendCommand(MetadataSubCommand<?> putPrincipalRequest) {
         MetadataCommandModel command = new MetadataCommandModel(putPrincipalRequest);
-        Headers metadata = HeadersUtil.metadataHeadersFor(tenantId, principalId);
+        Headers metadata = HeadersUtil.metadataHeadersFor(tenantId.toString(), principalId);
         metadataProcessor.init(mockProcessorContext);
         metadataProcessor.process(new Record<>(principalId, command.toProto().build(), 0L, metadata));
         return command;

@@ -12,9 +12,10 @@ _sym_db = _symbol_database.Default()
 
 
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+import littlehorse.model.object_id_pb2 as object__id__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rmetrics.proto\x12\x0blittlehorse\x1a\x1fgoogle/protobuf/timestamp.proto\"\x85\x01\n\rMonitorConfig\x12(\n\x02id\x18\x01 \x01(\x0b\x32\x1c.littlehorse.MonitorConfigId\x12\x18\n\x10window_length_ms\x18\x02 \x01(\x03\x12\x30\n\x0c\x63reated_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\x1d\n\x0fMonitorConfigId\x12\n\n\x02id\x18\x01 \x01(\t\"Y\n\x13\x45nableMetricRequest\x12(\n\x02id\x18\x01 \x01(\x0b\x32\x1c.littlehorse.MonitorConfigId\x12\x18\n\x10window_length_ms\x18\x02 \x01(\x03\x42G\n\x1fio.littlehorse.sdk.common.protoP\x01Z\x07.;model\xaa\x02\x18LittleHorse.Common.Protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rmetrics.proto\x12\x0blittlehorse\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x0fobject_id.proto\"\x85\x01\n\rMonitorConfig\x12(\n\x02id\x18\x01 \x01(\x0b\x32\x1c.littlehorse.MonitorConfigId\x12\x18\n\x10window_length_ms\x18\x02 \x01(\x03\x12\x30\n\x0c\x63reated_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"G\n\x0fMonitorConfigId\x12\n\n\x02id\x18\x01 \x01(\t\x12(\n\ttenant_id\x18\x02 \x01(\x0b\x32\x15.littlehorse.TenantId\"Y\n\x13\x45nableMetricRequest\x12(\n\x02id\x18\x01 \x01(\x0b\x32\x1c.littlehorse.MonitorConfigId\x12\x18\n\x10window_length_ms\x18\x02 \x01(\x03\"V\n\x12LHPartitionMonitor\x12@\n\x11tenant_partitions\x18\x01 \x03(\x0b\x32%.littlehorse.LHTenantPartitionMonitor\"h\n\x18LHTenantPartitionMonitor\x12!\n\x02id\x18\x01 \x01(\x0b\x32\x15.littlehorse.TenantId\x12)\n\x07metrics\x18\x03 \x03(\x0b\x32\x18.littlehorse.UsageMetric\"\x8a\x01\n\x0bUsageMetric\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x03\x12\x30\n\x0cwindow_start\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nwindow_end\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampBG\n\x1fio.littlehorse.sdk.common.protoP\x01Z\x07.;model\xaa\x02\x18LittleHorse.Common.Protob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -23,10 +24,16 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   DESCRIPTOR._serialized_options = b'\n\037io.littlehorse.sdk.common.protoP\001Z\007.;model\252\002\030LittleHorse.Common.Proto'
-  _globals['_MONITORCONFIG']._serialized_start=64
-  _globals['_MONITORCONFIG']._serialized_end=197
-  _globals['_MONITORCONFIGID']._serialized_start=199
-  _globals['_MONITORCONFIGID']._serialized_end=228
-  _globals['_ENABLEMETRICREQUEST']._serialized_start=230
-  _globals['_ENABLEMETRICREQUEST']._serialized_end=319
+  _globals['_MONITORCONFIG']._serialized_start=81
+  _globals['_MONITORCONFIG']._serialized_end=214
+  _globals['_MONITORCONFIGID']._serialized_start=216
+  _globals['_MONITORCONFIGID']._serialized_end=287
+  _globals['_ENABLEMETRICREQUEST']._serialized_start=289
+  _globals['_ENABLEMETRICREQUEST']._serialized_end=378
+  _globals['_LHPARTITIONMONITOR']._serialized_start=380
+  _globals['_LHPARTITIONMONITOR']._serialized_end=466
+  _globals['_LHTENANTPARTITIONMONITOR']._serialized_start=468
+  _globals['_LHTENANTPARTITIONMONITOR']._serialized_end=572
+  _globals['_USAGEMETRIC']._serialized_start=575
+  _globals['_USAGEMETRIC']._serialized_end=713
 # @@protoc_insertion_point(module_scope)
