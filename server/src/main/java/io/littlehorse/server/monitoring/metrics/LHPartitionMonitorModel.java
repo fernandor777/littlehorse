@@ -9,6 +9,7 @@ import io.littlehorse.sdk.common.exception.LHSerdeError;
 import io.littlehorse.sdk.common.proto.LHPartitionMonitor;
 import io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor;
 import io.littlehorse.sdk.common.proto.UsageMetric;
+import io.littlehorse.server.streams.stores.ClusterScopedStore;
 import io.littlehorse.server.streams.topology.core.ExecutionContext;
 import io.littlehorse.server.streams.topology.core.ProcessorExecutionContext;
 import java.time.Duration;
@@ -23,7 +24,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nullable;
+
+import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.processor.TaskId;
+import org.apache.kafka.streams.state.KeyValueStore;
 
 public class LHPartitionMonitorModel extends Storeable<LHPartitionMonitor> {
     private TaskId taskId;

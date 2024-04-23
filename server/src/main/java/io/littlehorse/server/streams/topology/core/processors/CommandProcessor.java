@@ -141,6 +141,7 @@ public class CommandProcessor implements Processor<String, Command, String, Comm
                     executionContext.authorization().tenantId());
             UsageMeasure measure = new UsageMeasure(monitorConfigId, command.getTime());
             monitor.record(measure, executionContext);
+            ClusterScopedStore.newInstance(nativeStore, executionContext).put(monitor);
         }
     }
 
