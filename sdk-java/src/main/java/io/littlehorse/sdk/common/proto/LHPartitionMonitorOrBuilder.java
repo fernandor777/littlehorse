@@ -8,25 +8,37 @@ public interface LHPartitionMonitorOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>repeated .littlehorse.LHTenantPartitionMonitor tenant_partitions = 1;</code>
+   * <code>string id = 1;</code>
+   * @return The id.
+   */
+  java.lang.String getId();
+  /**
+   * <code>string id = 1;</code>
+   * @return The bytes for id.
+   */
+  com.google.protobuf.ByteString
+      getIdBytes();
+
+  /**
+   * <code>repeated .littlehorse.LHTenantPartitionMonitor tenant_partitions = 2;</code>
    */
   java.util.List<io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor> 
       getTenantPartitionsList();
   /**
-   * <code>repeated .littlehorse.LHTenantPartitionMonitor tenant_partitions = 1;</code>
+   * <code>repeated .littlehorse.LHTenantPartitionMonitor tenant_partitions = 2;</code>
    */
   io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor getTenantPartitions(int index);
   /**
-   * <code>repeated .littlehorse.LHTenantPartitionMonitor tenant_partitions = 1;</code>
+   * <code>repeated .littlehorse.LHTenantPartitionMonitor tenant_partitions = 2;</code>
    */
   int getTenantPartitionsCount();
   /**
-   * <code>repeated .littlehorse.LHTenantPartitionMonitor tenant_partitions = 1;</code>
+   * <code>repeated .littlehorse.LHTenantPartitionMonitor tenant_partitions = 2;</code>
    */
   java.util.List<? extends io.littlehorse.sdk.common.proto.LHTenantPartitionMonitorOrBuilder> 
       getTenantPartitionsOrBuilderList();
   /**
-   * <code>repeated .littlehorse.LHTenantPartitionMonitor tenant_partitions = 1;</code>
+   * <code>repeated .littlehorse.LHTenantPartitionMonitor tenant_partitions = 2;</code>
    */
   io.littlehorse.sdk.common.proto.LHTenantPartitionMonitorOrBuilder getTenantPartitionsOrBuilder(
       int index);

@@ -8,41 +8,32 @@ public interface LHTenantPartitionMonitorOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.littlehorse.TenantId id = 1;</code>
-   * @return Whether the id field is set.
+   * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+   * @return Whether the metricId field is set.
    */
-  boolean hasId();
+  boolean hasMetricId();
   /**
-   * <code>.littlehorse.TenantId id = 1;</code>
-   * @return The id.
+   * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+   * @return The metricId.
    */
-  io.littlehorse.sdk.common.proto.TenantId getId();
+  io.littlehorse.sdk.common.proto.MonitorConfigId getMetricId();
   /**
-   * <code>.littlehorse.TenantId id = 1;</code>
+   * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
    */
-  io.littlehorse.sdk.common.proto.TenantIdOrBuilder getIdOrBuilder();
+  io.littlehorse.sdk.common.proto.MonitorConfigIdOrBuilder getMetricIdOrBuilder();
 
   /**
-   * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
+   * <code>.littlehorse.UsageMetric metrics = 2;</code>
+   * @return Whether the metrics field is set.
    */
-  java.util.List<io.littlehorse.sdk.common.proto.UsageMetric> 
-      getMetricsList();
+  boolean hasMetrics();
   /**
-   * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
+   * <code>.littlehorse.UsageMetric metrics = 2;</code>
+   * @return The metrics.
    */
-  io.littlehorse.sdk.common.proto.UsageMetric getMetrics(int index);
+  io.littlehorse.sdk.common.proto.UsageMetric getMetrics();
   /**
-   * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
+   * <code>.littlehorse.UsageMetric metrics = 2;</code>
    */
-  int getMetricsCount();
-  /**
-   * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-   */
-  java.util.List<? extends io.littlehorse.sdk.common.proto.UsageMetricOrBuilder> 
-      getMetricsOrBuilderList();
-  /**
-   * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-   */
-  io.littlehorse.sdk.common.proto.UsageMetricOrBuilder getMetricsOrBuilder(
-      int index);
+  io.littlehorse.sdk.common.proto.UsageMetricOrBuilder getMetricsOrBuilder();
 }

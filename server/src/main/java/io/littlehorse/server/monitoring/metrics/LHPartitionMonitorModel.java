@@ -1,9 +1,9 @@
 package io.littlehorse.server.monitoring.metrics;
 
 import com.google.protobuf.Message;
+import io.littlehorse.common.LHSerializable;
 import io.littlehorse.common.Storeable;
 import io.littlehorse.common.model.getable.objectId.MonitorConfigIdModel;
-import io.littlehorse.common.model.getable.objectId.TenantIdModel;
 import io.littlehorse.common.proto.StoreableType;
 import io.littlehorse.sdk.common.exception.LHSerdeError;
 import io.littlehorse.sdk.common.proto.LHPartitionMonitor;
@@ -25,13 +25,15 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 import org.apache.kafka.streams.processor.TaskId;
 
-public class LHPartitionMonitorMonitor extends Storeable<LHPartitionMonitor> {
+public class LHPartitionMonitorModel extends Storeable<LHPartitionMonitor> {
     private TaskId taskId;
 
     private final Map<MonitorConfigIdModel, UsageMetricModel> metrics = new HashMap<>();
     private final Map<MonitorConfigIdModel, MonitorConfigModel> configs = new HashMap<>();
 
-    public LHPartitionMonitorMonitor(TaskId taskId) {
+    public LHPartitionMonitorModel() {}
+
+    public LHPartitionMonitorModel(TaskId taskId) {
         this.taskId = taskId;
     }
 
@@ -92,18 +94,15 @@ public class LHPartitionMonitorMonitor extends Storeable<LHPartitionMonitor> {
     }
 
     private List<LHTenantPartitionMonitor> perTenantPartitionMonitors() {
-        Map<TenantIdModel, List<UsageMetric>> metricsPerTenant = new HashMap<>();
+        Map<MonitorConfigIdModel, UsageMetric> metricsPerTenant = new HashMap<>();
         metrics.forEach((monitorConfigIdModel, usageMetric) -> {
-            List<UsageMetric> tenantMetrics =
-                    metricsPerTenant.getOrDefault(monitorConfigIdModel.getTenantId(), new ArrayList<>());
-            tenantMetrics.add(usageMetric.toProto().build());
-            metricsPerTenant.put(monitorConfigIdModel.getTenantId(), tenantMetrics);
+            metricsPerTenant.put(monitorConfigIdModel, usageMetric.toProto().build());
         });
         List<LHTenantPartitionMonitor> out = new ArrayList<>();
-        metricsPerTenant.forEach((tenantId, usageMetrics) -> {
+        metricsPerTenant.forEach((metricId, usageMetrics) -> {
             LHTenantPartitionMonitor partitionMonitor = LHTenantPartitionMonitor.newBuilder()
-                    .setId(tenantId.toProto())
-                    .addAllMetrics(usageMetrics)
+                    .setMetricId(metricId.toProto())
+                    .setMetrics(usageMetrics)
                     .build();
             out.add(partitionMonitor);
         });
@@ -112,11 +111,23 @@ public class LHPartitionMonitorMonitor extends Storeable<LHPartitionMonitor> {
 
     @Override
     public LHPartitionMonitor.Builder toProto() {
-        return LHPartitionMonitor.newBuilder().addAllTenantPartitions(perTenantPartitionMonitors());
+        return LHPartitionMonitor.newBuilder()
+                .setId(taskId.toString())
+                .addAllTenantPartitions(perTenantPartitionMonitors());
     }
 
     @Override
-    public void initFrom(Message proto, ExecutionContext context) throws LHSerdeError {}
+    public void initFrom(Message proto, ExecutionContext context) throws LHSerdeError {
+        LHPartitionMonitor p = (LHPartitionMonitor) proto;
+        this.taskId = TaskId.parse(p.getId());
+        for (LHTenantPartitionMonitor lhTenantPartitionMonitor : p.getTenantPartitionsList()) {
+            MonitorConfigIdModel configId = LHSerializable.fromProto(
+                    lhTenantPartitionMonitor.getMetricId(), MonitorConfigIdModel.class, context);
+            UsageMetricModel metric =
+                    LHSerializable.fromProto(lhTenantPartitionMonitor.getMetrics(), UsageMetricModel.class, context);
+            metrics.put(configId, metric);
+        }
+    }
 
     @Override
     public Class<LHPartitionMonitor> getProtoBaseClass() {
@@ -132,4 +143,6 @@ public class LHPartitionMonitorMonitor extends Storeable<LHPartitionMonitor> {
     public StoreableType getType() {
         return null;
     }
+
+    public void fordward(ProcessorExecutionContext context) {}
 }

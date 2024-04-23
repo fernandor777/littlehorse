@@ -34,18 +34,20 @@ class EnableMetricRequest(_message.Message):
     def __init__(self, id: _Optional[_Union[MonitorConfigId, _Mapping]] = ..., window_length_ms: _Optional[int] = ...) -> None: ...
 
 class LHPartitionMonitor(_message.Message):
-    __slots__ = ["tenant_partitions"]
+    __slots__ = ["id", "tenant_partitions"]
+    ID_FIELD_NUMBER: _ClassVar[int]
     TENANT_PARTITIONS_FIELD_NUMBER: _ClassVar[int]
+    id: str
     tenant_partitions: _containers.RepeatedCompositeFieldContainer[LHTenantPartitionMonitor]
-    def __init__(self, tenant_partitions: _Optional[_Iterable[_Union[LHTenantPartitionMonitor, _Mapping]]] = ...) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., tenant_partitions: _Optional[_Iterable[_Union[LHTenantPartitionMonitor, _Mapping]]] = ...) -> None: ...
 
 class LHTenantPartitionMonitor(_message.Message):
-    __slots__ = ["id", "metrics"]
-    ID_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["metric_id", "metrics"]
+    METRIC_ID_FIELD_NUMBER: _ClassVar[int]
     METRICS_FIELD_NUMBER: _ClassVar[int]
-    id: _object_id_pb2.TenantId
-    metrics: _containers.RepeatedCompositeFieldContainer[UsageMetric]
-    def __init__(self, id: _Optional[_Union[_object_id_pb2.TenantId, _Mapping]] = ..., metrics: _Optional[_Iterable[_Union[UsageMetric, _Mapping]]] = ...) -> None: ...
+    metric_id: MonitorConfigId
+    metrics: UsageMetric
+    def __init__(self, metric_id: _Optional[_Union[MonitorConfigId, _Mapping]] = ..., metrics: _Optional[_Union[UsageMetric, _Mapping]] = ...) -> None: ...
 
 class UsageMetric(_message.Message):
     __slots__ = ["metric_id", "value", "window_start", "window_end"]

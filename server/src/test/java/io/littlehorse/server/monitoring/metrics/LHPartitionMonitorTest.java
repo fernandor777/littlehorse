@@ -2,18 +2,16 @@ package io.littlehorse.server.monitoring.metrics;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.littlehorse.common.LHSerializable;
 import io.littlehorse.common.model.getable.objectId.MonitorConfigIdModel;
 import io.littlehorse.common.model.getable.objectId.TenantIdModel;
 import io.littlehorse.sdk.common.proto.LHPartitionMonitor;
-import io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor;
-import io.littlehorse.sdk.common.proto.UsageMetric;
 import io.littlehorse.server.streams.storeinternals.ReadOnlyMetadataManager;
 import io.littlehorse.server.streams.topology.core.ProcessorExecutionContext;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 import org.apache.kafka.streams.processor.TaskId;
 import org.junit.jupiter.api.Test;
@@ -25,7 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class LHPartitionMonitorTest {
 
     private final TaskId task = TaskId.parse("0_1");
-    private final LHPartitionMonitorMonitor partitionMonitor = new LHPartitionMonitorMonitor(task);
+    private final LHPartitionMonitorModel partitionMonitor = new LHPartitionMonitorModel(task);
     private final ProcessorExecutionContext mockContext = Mockito.mock();
     private final ReadOnlyMetadataManager mockMetadataManager = Mockito.mock();
     private final TenantIdModel tenantId = new TenantIdModel("my-tenant");
@@ -127,13 +125,12 @@ class LHPartitionMonitorTest {
         partitionMonitor.record(new UsageMeasure(metricId, new Date()), mockContext);
         partitionMonitor.record(new UsageMeasure(metricId, new Date()), mockContext);
         partitionMonitor.record(new UsageMeasure(metricId, new Date()), mockContext);
-        LHPartitionMonitor proto = partitionMonitor.toProto().build();
-        List<LHTenantPartitionMonitor> tenantPartitions = proto.getTenantPartitionsList();
-        assertThat(tenantPartitions).isNotEmpty();
-        LHTenantPartitionMonitor tenantPartitionMonitor = tenantPartitions.get(0);
-        assertThat(tenantPartitionMonitor.getId()).isNotNull();
-        UsageMetric metric = tenantPartitionMonitor.getMetrics(0);
-        assertThat(metric.getMetricId().getId()).isEqualTo("RunWfCommand");
-        assertThat(metric.getValue()).isEqualTo(3L);
+        LHPartitionMonitor protoPartitionMonitor = partitionMonitor.toProto().build();
+        LHPartitionMonitorModel deserializedPartitionMonitor =
+                LHSerializable.fromProto(protoPartitionMonitor, LHPartitionMonitorModel.class, mockContext);
+        assertThat(deserializedPartitionMonitor)
+                .usingRecursiveComparison()
+                .ignoringFields("configs")
+                .isEqualTo(partitionMonitor);
     }
 }

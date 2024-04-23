@@ -11,6 +11,7 @@ import io.littlehorse.sdk.common.proto.UsageMetric;
 import io.littlehorse.server.streams.stores.TenantScopedStore;
 import io.littlehorse.server.streams.topology.core.ExecutionContext;
 import java.util.Date;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -63,5 +64,20 @@ public class UsageMetricModel extends LHSerializable<UsageMetric> implements Rep
     @Override
     public String getPartitionKey() {
         return metricId.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UsageMetricModel that)) return false;
+        return value == that.value
+                && Objects.equals(metricId, that.metricId)
+                && Objects.equals(windowStart, that.windowStart)
+                && Objects.equals(windowEnd, that.windowEnd);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(metricId, value, windowStart, windowEnd);
     }
 }

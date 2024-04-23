@@ -26,12 +26,13 @@ message EnableMetricRequest {
 }
 
 message LHPartitionMonitor {
-	repeated LHTenantPartitionMonitor tenant_partitions = 1;
+	string id = 1;
+	repeated LHTenantPartitionMonitor tenant_partitions = 2;
 }
 
 message LHTenantPartitionMonitor {
-	TenantId id = 1;
-	repeated UsageMetric metrics = 3;
+	MonitorConfigId metric_id = 1;
+	UsageMetric metrics = 2;
 }
 
 message UsageMetric {

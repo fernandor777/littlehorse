@@ -61,11 +61,11 @@ public class MonitorConfigIdModel extends MetadataId<MonitorConfigId, MonitorCon
         if (this == o) return true;
         if (!(o instanceof MonitorConfigIdModel that)) return false;
         if (!super.equals(o)) return false;
-        return Objects.equals(id, that.id);
+        return Objects.equals(id, that.id) && Objects.equals(tenantId, that.tenantId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id);
+        return Objects.hash(super.hashCode(), id, tenantId);
     }
 }

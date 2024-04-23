@@ -16,7 +16,6 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private LHTenantPartitionMonitor() {
-    metrics_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -39,71 +38,56 @@ private static final long serialVersionUID = 0L;
             io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor.class, io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor.Builder.class);
   }
 
-  public static final int ID_FIELD_NUMBER = 1;
-  private io.littlehorse.sdk.common.proto.TenantId id_;
+  public static final int METRIC_ID_FIELD_NUMBER = 1;
+  private io.littlehorse.sdk.common.proto.MonitorConfigId metricId_;
   /**
-   * <code>.littlehorse.TenantId id = 1;</code>
-   * @return Whether the id field is set.
+   * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+   * @return Whether the metricId field is set.
    */
   @java.lang.Override
-  public boolean hasId() {
-    return id_ != null;
+  public boolean hasMetricId() {
+    return metricId_ != null;
   }
   /**
-   * <code>.littlehorse.TenantId id = 1;</code>
-   * @return The id.
+   * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+   * @return The metricId.
    */
   @java.lang.Override
-  public io.littlehorse.sdk.common.proto.TenantId getId() {
-    return id_ == null ? io.littlehorse.sdk.common.proto.TenantId.getDefaultInstance() : id_;
+  public io.littlehorse.sdk.common.proto.MonitorConfigId getMetricId() {
+    return metricId_ == null ? io.littlehorse.sdk.common.proto.MonitorConfigId.getDefaultInstance() : metricId_;
   }
   /**
-   * <code>.littlehorse.TenantId id = 1;</code>
+   * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
    */
   @java.lang.Override
-  public io.littlehorse.sdk.common.proto.TenantIdOrBuilder getIdOrBuilder() {
-    return id_ == null ? io.littlehorse.sdk.common.proto.TenantId.getDefaultInstance() : id_;
+  public io.littlehorse.sdk.common.proto.MonitorConfigIdOrBuilder getMetricIdOrBuilder() {
+    return metricId_ == null ? io.littlehorse.sdk.common.proto.MonitorConfigId.getDefaultInstance() : metricId_;
   }
 
-  public static final int METRICS_FIELD_NUMBER = 3;
-  @SuppressWarnings("serial")
-  private java.util.List<io.littlehorse.sdk.common.proto.UsageMetric> metrics_;
+  public static final int METRICS_FIELD_NUMBER = 2;
+  private io.littlehorse.sdk.common.proto.UsageMetric metrics_;
   /**
-   * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
+   * <code>.littlehorse.UsageMetric metrics = 2;</code>
+   * @return Whether the metrics field is set.
    */
   @java.lang.Override
-  public java.util.List<io.littlehorse.sdk.common.proto.UsageMetric> getMetricsList() {
-    return metrics_;
+  public boolean hasMetrics() {
+    return metrics_ != null;
   }
   /**
-   * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
+   * <code>.littlehorse.UsageMetric metrics = 2;</code>
+   * @return The metrics.
    */
   @java.lang.Override
-  public java.util.List<? extends io.littlehorse.sdk.common.proto.UsageMetricOrBuilder> 
-      getMetricsOrBuilderList() {
-    return metrics_;
+  public io.littlehorse.sdk.common.proto.UsageMetric getMetrics() {
+    return metrics_ == null ? io.littlehorse.sdk.common.proto.UsageMetric.getDefaultInstance() : metrics_;
   }
   /**
-   * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
+   * <code>.littlehorse.UsageMetric metrics = 2;</code>
    */
   @java.lang.Override
-  public int getMetricsCount() {
-    return metrics_.size();
-  }
-  /**
-   * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-   */
-  @java.lang.Override
-  public io.littlehorse.sdk.common.proto.UsageMetric getMetrics(int index) {
-    return metrics_.get(index);
-  }
-  /**
-   * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-   */
-  @java.lang.Override
-  public io.littlehorse.sdk.common.proto.UsageMetricOrBuilder getMetricsOrBuilder(
-      int index) {
-    return metrics_.get(index);
+  public io.littlehorse.sdk.common.proto.UsageMetricOrBuilder getMetricsOrBuilder() {
+    return metrics_ == null ? io.littlehorse.sdk.common.proto.UsageMetric.getDefaultInstance() : metrics_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -120,11 +104,11 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (id_ != null) {
-      output.writeMessage(1, getId());
+    if (metricId_ != null) {
+      output.writeMessage(1, getMetricId());
     }
-    for (int i = 0; i < metrics_.size(); i++) {
-      output.writeMessage(3, metrics_.get(i));
+    if (metrics_ != null) {
+      output.writeMessage(2, getMetrics());
     }
     getUnknownFields().writeTo(output);
   }
@@ -135,13 +119,13 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (id_ != null) {
+    if (metricId_ != null) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(1, getId());
+        .computeMessageSize(1, getMetricId());
     }
-    for (int i = 0; i < metrics_.size(); i++) {
+    if (metrics_ != null) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, metrics_.get(i));
+        .computeMessageSize(2, getMetrics());
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -158,13 +142,16 @@ private static final long serialVersionUID = 0L;
     }
     io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor other = (io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor) obj;
 
-    if (hasId() != other.hasId()) return false;
-    if (hasId()) {
-      if (!getId()
-          .equals(other.getId())) return false;
+    if (hasMetricId() != other.hasMetricId()) return false;
+    if (hasMetricId()) {
+      if (!getMetricId()
+          .equals(other.getMetricId())) return false;
     }
-    if (!getMetricsList()
-        .equals(other.getMetricsList())) return false;
+    if (hasMetrics() != other.hasMetrics()) return false;
+    if (hasMetrics()) {
+      if (!getMetrics()
+          .equals(other.getMetrics())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -176,13 +163,13 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    if (hasId()) {
-      hash = (37 * hash) + ID_FIELD_NUMBER;
-      hash = (53 * hash) + getId().hashCode();
+    if (hasMetricId()) {
+      hash = (37 * hash) + METRIC_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getMetricId().hashCode();
     }
-    if (getMetricsCount() > 0) {
+    if (hasMetrics()) {
       hash = (37 * hash) + METRICS_FIELD_NUMBER;
-      hash = (53 * hash) + getMetricsList().hashCode();
+      hash = (53 * hash) + getMetrics().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -315,18 +302,16 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
-      id_ = null;
-      if (idBuilder_ != null) {
-        idBuilder_.dispose();
-        idBuilder_ = null;
+      metricId_ = null;
+      if (metricIdBuilder_ != null) {
+        metricIdBuilder_.dispose();
+        metricIdBuilder_ = null;
       }
-      if (metricsBuilder_ == null) {
-        metrics_ = java.util.Collections.emptyList();
-      } else {
-        metrics_ = null;
-        metricsBuilder_.clear();
+      metrics_ = null;
+      if (metricsBuilder_ != null) {
+        metricsBuilder_.dispose();
+        metricsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -353,30 +338,22 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor buildPartial() {
       io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor result = new io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor(this);
-      buildPartialRepeatedFields(result);
       if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    private void buildPartialRepeatedFields(io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor result) {
-      if (metricsBuilder_ == null) {
-        if (((bitField0_ & 0x00000002) != 0)) {
-          metrics_ = java.util.Collections.unmodifiableList(metrics_);
-          bitField0_ = (bitField0_ & ~0x00000002);
-        }
-        result.metrics_ = metrics_;
-      } else {
-        result.metrics_ = metricsBuilder_.build();
-      }
-    }
-
     private void buildPartial0(io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.id_ = idBuilder_ == null
-            ? id_
-            : idBuilder_.build();
+        result.metricId_ = metricIdBuilder_ == null
+            ? metricId_
+            : metricIdBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.metrics_ = metricsBuilder_ == null
+            ? metrics_
+            : metricsBuilder_.build();
       }
     }
 
@@ -424,34 +401,11 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor other) {
       if (other == io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor.getDefaultInstance()) return this;
-      if (other.hasId()) {
-        mergeId(other.getId());
+      if (other.hasMetricId()) {
+        mergeMetricId(other.getMetricId());
       }
-      if (metricsBuilder_ == null) {
-        if (!other.metrics_.isEmpty()) {
-          if (metrics_.isEmpty()) {
-            metrics_ = other.metrics_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-          } else {
-            ensureMetricsIsMutable();
-            metrics_.addAll(other.metrics_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.metrics_.isEmpty()) {
-          if (metricsBuilder_.isEmpty()) {
-            metricsBuilder_.dispose();
-            metricsBuilder_ = null;
-            metrics_ = other.metrics_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-            metricsBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getMetricsFieldBuilder() : null;
-          } else {
-            metricsBuilder_.addAllMessages(other.metrics_);
-          }
-        }
+      if (other.hasMetrics()) {
+        mergeMetrics(other.getMetrics());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -481,24 +435,18 @@ private static final long serialVersionUID = 0L;
               break;
             case 10: {
               input.readMessage(
-                  getIdFieldBuilder().getBuilder(),
+                  getMetricIdFieldBuilder().getBuilder(),
                   extensionRegistry);
               bitField0_ |= 0x00000001;
               break;
             } // case 10
-            case 26: {
-              io.littlehorse.sdk.common.proto.UsageMetric m =
-                  input.readMessage(
-                      io.littlehorse.sdk.common.proto.UsageMetric.parser(),
-                      extensionRegistry);
-              if (metricsBuilder_ == null) {
-                ensureMetricsIsMutable();
-                metrics_.add(m);
-              } else {
-                metricsBuilder_.addMessage(m);
-              }
+            case 18: {
+              input.readMessage(
+                  getMetricsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000002;
               break;
-            } // case 26
+            } // case 18
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -516,358 +464,237 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private io.littlehorse.sdk.common.proto.TenantId id_;
+    private io.littlehorse.sdk.common.proto.MonitorConfigId metricId_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.littlehorse.sdk.common.proto.TenantId, io.littlehorse.sdk.common.proto.TenantId.Builder, io.littlehorse.sdk.common.proto.TenantIdOrBuilder> idBuilder_;
+        io.littlehorse.sdk.common.proto.MonitorConfigId, io.littlehorse.sdk.common.proto.MonitorConfigId.Builder, io.littlehorse.sdk.common.proto.MonitorConfigIdOrBuilder> metricIdBuilder_;
     /**
-     * <code>.littlehorse.TenantId id = 1;</code>
-     * @return Whether the id field is set.
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+     * @return Whether the metricId field is set.
      */
-    public boolean hasId() {
+    public boolean hasMetricId() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>.littlehorse.TenantId id = 1;</code>
-     * @return The id.
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+     * @return The metricId.
      */
-    public io.littlehorse.sdk.common.proto.TenantId getId() {
-      if (idBuilder_ == null) {
-        return id_ == null ? io.littlehorse.sdk.common.proto.TenantId.getDefaultInstance() : id_;
+    public io.littlehorse.sdk.common.proto.MonitorConfigId getMetricId() {
+      if (metricIdBuilder_ == null) {
+        return metricId_ == null ? io.littlehorse.sdk.common.proto.MonitorConfigId.getDefaultInstance() : metricId_;
       } else {
-        return idBuilder_.getMessage();
+        return metricIdBuilder_.getMessage();
       }
     }
     /**
-     * <code>.littlehorse.TenantId id = 1;</code>
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
      */
-    public Builder setId(io.littlehorse.sdk.common.proto.TenantId value) {
-      if (idBuilder_ == null) {
+    public Builder setMetricId(io.littlehorse.sdk.common.proto.MonitorConfigId value) {
+      if (metricIdBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        id_ = value;
+        metricId_ = value;
       } else {
-        idBuilder_.setMessage(value);
+        metricIdBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
     /**
-     * <code>.littlehorse.TenantId id = 1;</code>
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
      */
-    public Builder setId(
-        io.littlehorse.sdk.common.proto.TenantId.Builder builderForValue) {
-      if (idBuilder_ == null) {
-        id_ = builderForValue.build();
+    public Builder setMetricId(
+        io.littlehorse.sdk.common.proto.MonitorConfigId.Builder builderForValue) {
+      if (metricIdBuilder_ == null) {
+        metricId_ = builderForValue.build();
       } else {
-        idBuilder_.setMessage(builderForValue.build());
+        metricIdBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
     /**
-     * <code>.littlehorse.TenantId id = 1;</code>
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
      */
-    public Builder mergeId(io.littlehorse.sdk.common.proto.TenantId value) {
-      if (idBuilder_ == null) {
+    public Builder mergeMetricId(io.littlehorse.sdk.common.proto.MonitorConfigId value) {
+      if (metricIdBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0) &&
-          id_ != null &&
-          id_ != io.littlehorse.sdk.common.proto.TenantId.getDefaultInstance()) {
-          getIdBuilder().mergeFrom(value);
+          metricId_ != null &&
+          metricId_ != io.littlehorse.sdk.common.proto.MonitorConfigId.getDefaultInstance()) {
+          getMetricIdBuilder().mergeFrom(value);
         } else {
-          id_ = value;
+          metricId_ = value;
         }
       } else {
-        idBuilder_.mergeFrom(value);
+        metricIdBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
     /**
-     * <code>.littlehorse.TenantId id = 1;</code>
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
      */
-    public Builder clearId() {
+    public Builder clearMetricId() {
       bitField0_ = (bitField0_ & ~0x00000001);
-      id_ = null;
-      if (idBuilder_ != null) {
-        idBuilder_.dispose();
-        idBuilder_ = null;
+      metricId_ = null;
+      if (metricIdBuilder_ != null) {
+        metricIdBuilder_.dispose();
+        metricIdBuilder_ = null;
       }
       onChanged();
       return this;
     }
     /**
-     * <code>.littlehorse.TenantId id = 1;</code>
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
      */
-    public io.littlehorse.sdk.common.proto.TenantId.Builder getIdBuilder() {
+    public io.littlehorse.sdk.common.proto.MonitorConfigId.Builder getMetricIdBuilder() {
       bitField0_ |= 0x00000001;
       onChanged();
-      return getIdFieldBuilder().getBuilder();
+      return getMetricIdFieldBuilder().getBuilder();
     }
     /**
-     * <code>.littlehorse.TenantId id = 1;</code>
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
      */
-    public io.littlehorse.sdk.common.proto.TenantIdOrBuilder getIdOrBuilder() {
-      if (idBuilder_ != null) {
-        return idBuilder_.getMessageOrBuilder();
+    public io.littlehorse.sdk.common.proto.MonitorConfigIdOrBuilder getMetricIdOrBuilder() {
+      if (metricIdBuilder_ != null) {
+        return metricIdBuilder_.getMessageOrBuilder();
       } else {
-        return id_ == null ?
-            io.littlehorse.sdk.common.proto.TenantId.getDefaultInstance() : id_;
+        return metricId_ == null ?
+            io.littlehorse.sdk.common.proto.MonitorConfigId.getDefaultInstance() : metricId_;
       }
     }
     /**
-     * <code>.littlehorse.TenantId id = 1;</code>
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        io.littlehorse.sdk.common.proto.TenantId, io.littlehorse.sdk.common.proto.TenantId.Builder, io.littlehorse.sdk.common.proto.TenantIdOrBuilder> 
-        getIdFieldBuilder() {
-      if (idBuilder_ == null) {
-        idBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            io.littlehorse.sdk.common.proto.TenantId, io.littlehorse.sdk.common.proto.TenantId.Builder, io.littlehorse.sdk.common.proto.TenantIdOrBuilder>(
-                getId(),
+        io.littlehorse.sdk.common.proto.MonitorConfigId, io.littlehorse.sdk.common.proto.MonitorConfigId.Builder, io.littlehorse.sdk.common.proto.MonitorConfigIdOrBuilder> 
+        getMetricIdFieldBuilder() {
+      if (metricIdBuilder_ == null) {
+        metricIdBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            io.littlehorse.sdk.common.proto.MonitorConfigId, io.littlehorse.sdk.common.proto.MonitorConfigId.Builder, io.littlehorse.sdk.common.proto.MonitorConfigIdOrBuilder>(
+                getMetricId(),
                 getParentForChildren(),
                 isClean());
-        id_ = null;
+        metricId_ = null;
       }
-      return idBuilder_;
+      return metricIdBuilder_;
     }
 
-    private java.util.List<io.littlehorse.sdk.common.proto.UsageMetric> metrics_ =
-      java.util.Collections.emptyList();
-    private void ensureMetricsIsMutable() {
-      if (!((bitField0_ & 0x00000002) != 0)) {
-        metrics_ = new java.util.ArrayList<io.littlehorse.sdk.common.proto.UsageMetric>(metrics_);
-        bitField0_ |= 0x00000002;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
+    private io.littlehorse.sdk.common.proto.UsageMetric metrics_;
+    private com.google.protobuf.SingleFieldBuilderV3<
         io.littlehorse.sdk.common.proto.UsageMetric, io.littlehorse.sdk.common.proto.UsageMetric.Builder, io.littlehorse.sdk.common.proto.UsageMetricOrBuilder> metricsBuilder_;
-
     /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
+     * <code>.littlehorse.UsageMetric metrics = 2;</code>
+     * @return Whether the metrics field is set.
      */
-    public java.util.List<io.littlehorse.sdk.common.proto.UsageMetric> getMetricsList() {
+    public boolean hasMetrics() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>.littlehorse.UsageMetric metrics = 2;</code>
+     * @return The metrics.
+     */
+    public io.littlehorse.sdk.common.proto.UsageMetric getMetrics() {
       if (metricsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(metrics_);
+        return metrics_ == null ? io.littlehorse.sdk.common.proto.UsageMetric.getDefaultInstance() : metrics_;
       } else {
-        return metricsBuilder_.getMessageList();
+        return metricsBuilder_.getMessage();
       }
     }
     /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
+     * <code>.littlehorse.UsageMetric metrics = 2;</code>
      */
-    public int getMetricsCount() {
+    public Builder setMetrics(io.littlehorse.sdk.common.proto.UsageMetric value) {
       if (metricsBuilder_ == null) {
-        return metrics_.size();
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        metrics_ = value;
       } else {
-        return metricsBuilder_.getCount();
+        metricsBuilder_.setMessage(value);
       }
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
     }
     /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-     */
-    public io.littlehorse.sdk.common.proto.UsageMetric getMetrics(int index) {
-      if (metricsBuilder_ == null) {
-        return metrics_.get(index);
-      } else {
-        return metricsBuilder_.getMessage(index);
-      }
-    }
-    /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
+     * <code>.littlehorse.UsageMetric metrics = 2;</code>
      */
     public Builder setMetrics(
-        int index, io.littlehorse.sdk.common.proto.UsageMetric value) {
-      if (metricsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureMetricsIsMutable();
-        metrics_.set(index, value);
-        onChanged();
-      } else {
-        metricsBuilder_.setMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-     */
-    public Builder setMetrics(
-        int index, io.littlehorse.sdk.common.proto.UsageMetric.Builder builderForValue) {
-      if (metricsBuilder_ == null) {
-        ensureMetricsIsMutable();
-        metrics_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        metricsBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-     */
-    public Builder addMetrics(io.littlehorse.sdk.common.proto.UsageMetric value) {
-      if (metricsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureMetricsIsMutable();
-        metrics_.add(value);
-        onChanged();
-      } else {
-        metricsBuilder_.addMessage(value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-     */
-    public Builder addMetrics(
-        int index, io.littlehorse.sdk.common.proto.UsageMetric value) {
-      if (metricsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureMetricsIsMutable();
-        metrics_.add(index, value);
-        onChanged();
-      } else {
-        metricsBuilder_.addMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-     */
-    public Builder addMetrics(
         io.littlehorse.sdk.common.proto.UsageMetric.Builder builderForValue) {
       if (metricsBuilder_ == null) {
-        ensureMetricsIsMutable();
-        metrics_.add(builderForValue.build());
-        onChanged();
+        metrics_ = builderForValue.build();
       } else {
-        metricsBuilder_.addMessage(builderForValue.build());
+        metricsBuilder_.setMessage(builderForValue.build());
       }
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
+     * <code>.littlehorse.UsageMetric metrics = 2;</code>
      */
-    public Builder addMetrics(
-        int index, io.littlehorse.sdk.common.proto.UsageMetric.Builder builderForValue) {
+    public Builder mergeMetrics(io.littlehorse.sdk.common.proto.UsageMetric value) {
       if (metricsBuilder_ == null) {
-        ensureMetricsIsMutable();
-        metrics_.add(index, builderForValue.build());
-        onChanged();
+        if (((bitField0_ & 0x00000002) != 0) &&
+          metrics_ != null &&
+          metrics_ != io.littlehorse.sdk.common.proto.UsageMetric.getDefaultInstance()) {
+          getMetricsBuilder().mergeFrom(value);
+        } else {
+          metrics_ = value;
+        }
       } else {
-        metricsBuilder_.addMessage(index, builderForValue.build());
+        metricsBuilder_.mergeFrom(value);
       }
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-     */
-    public Builder addAllMetrics(
-        java.lang.Iterable<? extends io.littlehorse.sdk.common.proto.UsageMetric> values) {
-      if (metricsBuilder_ == null) {
-        ensureMetricsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, metrics_);
-        onChanged();
-      } else {
-        metricsBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
+     * <code>.littlehorse.UsageMetric metrics = 2;</code>
      */
     public Builder clearMetrics() {
-      if (metricsBuilder_ == null) {
-        metrics_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
-        onChanged();
-      } else {
-        metricsBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-     */
-    public Builder removeMetrics(int index) {
-      if (metricsBuilder_ == null) {
-        ensureMetricsIsMutable();
-        metrics_.remove(index);
-        onChanged();
-      } else {
-        metricsBuilder_.remove(index);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-     */
-    public io.littlehorse.sdk.common.proto.UsageMetric.Builder getMetricsBuilder(
-        int index) {
-      return getMetricsFieldBuilder().getBuilder(index);
-    }
-    /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-     */
-    public io.littlehorse.sdk.common.proto.UsageMetricOrBuilder getMetricsOrBuilder(
-        int index) {
-      if (metricsBuilder_ == null) {
-        return metrics_.get(index);  } else {
-        return metricsBuilder_.getMessageOrBuilder(index);
-      }
-    }
-    /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-     */
-    public java.util.List<? extends io.littlehorse.sdk.common.proto.UsageMetricOrBuilder> 
-         getMetricsOrBuilderList() {
+      bitField0_ = (bitField0_ & ~0x00000002);
+      metrics_ = null;
       if (metricsBuilder_ != null) {
-        return metricsBuilder_.getMessageOrBuilderList();
+        metricsBuilder_.dispose();
+        metricsBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.littlehorse.UsageMetric metrics = 2;</code>
+     */
+    public io.littlehorse.sdk.common.proto.UsageMetric.Builder getMetricsBuilder() {
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return getMetricsFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.littlehorse.UsageMetric metrics = 2;</code>
+     */
+    public io.littlehorse.sdk.common.proto.UsageMetricOrBuilder getMetricsOrBuilder() {
+      if (metricsBuilder_ != null) {
+        return metricsBuilder_.getMessageOrBuilder();
       } else {
-        return java.util.Collections.unmodifiableList(metrics_);
+        return metrics_ == null ?
+            io.littlehorse.sdk.common.proto.UsageMetric.getDefaultInstance() : metrics_;
       }
     }
     /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
+     * <code>.littlehorse.UsageMetric metrics = 2;</code>
      */
-    public io.littlehorse.sdk.common.proto.UsageMetric.Builder addMetricsBuilder() {
-      return getMetricsFieldBuilder().addBuilder(
-          io.littlehorse.sdk.common.proto.UsageMetric.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-     */
-    public io.littlehorse.sdk.common.proto.UsageMetric.Builder addMetricsBuilder(
-        int index) {
-      return getMetricsFieldBuilder().addBuilder(
-          index, io.littlehorse.sdk.common.proto.UsageMetric.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .littlehorse.UsageMetric metrics = 3;</code>
-     */
-    public java.util.List<io.littlehorse.sdk.common.proto.UsageMetric.Builder> 
-         getMetricsBuilderList() {
-      return getMetricsFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
+    private com.google.protobuf.SingleFieldBuilderV3<
         io.littlehorse.sdk.common.proto.UsageMetric, io.littlehorse.sdk.common.proto.UsageMetric.Builder, io.littlehorse.sdk.common.proto.UsageMetricOrBuilder> 
         getMetricsFieldBuilder() {
       if (metricsBuilder_ == null) {
-        metricsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+        metricsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
             io.littlehorse.sdk.common.proto.UsageMetric, io.littlehorse.sdk.common.proto.UsageMetric.Builder, io.littlehorse.sdk.common.proto.UsageMetricOrBuilder>(
-                metrics_,
-                ((bitField0_ & 0x00000002) != 0),
+                getMetrics(),
                 getParentForChildren(),
                 isClean());
         metrics_ = null;

@@ -21,7 +21,7 @@ import io.littlehorse.common.proto.WaitForCommandResponse;
 import io.littlehorse.common.util.LHUtil;
 import io.littlehorse.sdk.common.proto.Tenant;
 import io.littlehorse.server.KafkaStreamsServerImpl;
-import io.littlehorse.server.monitoring.metrics.LHPartitionMonitorMonitor;
+import io.littlehorse.server.monitoring.metrics.LHPartitionMonitorModel;
 import io.littlehorse.server.monitoring.metrics.UsageMeasure;
 import io.littlehorse.server.streams.ServerTopology;
 import io.littlehorse.server.streams.store.LHIterKeyValue;
@@ -58,7 +58,7 @@ public class CommandProcessor implements Processor<String, Command, String, Comm
     private KeyValueStore<String, Bytes> nativeStore;
     private KeyValueStore<String, Bytes> globalStore;
     private boolean partitionIsClaimed;
-    private LHPartitionMonitorMonitor monitor;
+    private LHPartitionMonitorModel monitor;
 
     public CommandProcessor(
             LHServerConfig config,
@@ -78,7 +78,7 @@ public class CommandProcessor implements Processor<String, Command, String, Comm
         this.globalStore = ctx.getStateStore(ServerTopology.GLOBAL_METADATA_STORE);
         onPartitionClaimed();
         ctx.schedule(Duration.ofSeconds(30), PunctuationType.WALL_CLOCK_TIME, this::forwardMetricsUpdates);
-        monitor = new LHPartitionMonitorMonitor(ctx.taskId());
+        monitor = new LHPartitionMonitorModel(ctx.taskId());
     }
 
     @Override

@@ -23,12 +23,13 @@ export interface EnableMetricRequest {
 }
 
 export interface LHPartitionMonitor {
+  id: string;
   tenantPartitions: LHTenantPartitionMonitor[];
 }
 
 export interface LHTenantPartitionMonitor {
-  id: TenantId | undefined;
-  metrics: UsageMetric[];
+  metricId: MonitorConfigId | undefined;
+  metrics: UsageMetric | undefined;
 }
 
 export interface UsageMetric {
@@ -220,13 +221,16 @@ export const EnableMetricRequest = {
 };
 
 function createBaseLHPartitionMonitor(): LHPartitionMonitor {
-  return { tenantPartitions: [] };
+  return { id: "", tenantPartitions: [] };
 }
 
 export const LHPartitionMonitor = {
   encode(message: LHPartitionMonitor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
     for (const v of message.tenantPartitions) {
-      LHTenantPartitionMonitor.encode(v!, writer.uint32(10).fork()).ldelim();
+      LHTenantPartitionMonitor.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -240,6 +244,13 @@ export const LHPartitionMonitor = {
       switch (tag >>> 3) {
         case 1:
           if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
             break;
           }
 
@@ -259,22 +270,23 @@ export const LHPartitionMonitor = {
   },
   fromPartial(object: DeepPartial<LHPartitionMonitor>): LHPartitionMonitor {
     const message = createBaseLHPartitionMonitor();
+    message.id = object.id ?? "";
     message.tenantPartitions = object.tenantPartitions?.map((e) => LHTenantPartitionMonitor.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseLHTenantPartitionMonitor(): LHTenantPartitionMonitor {
-  return { id: undefined, metrics: [] };
+  return { metricId: undefined, metrics: undefined };
 }
 
 export const LHTenantPartitionMonitor = {
   encode(message: LHTenantPartitionMonitor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== undefined) {
-      TenantId.encode(message.id, writer.uint32(10).fork()).ldelim();
+    if (message.metricId !== undefined) {
+      MonitorConfigId.encode(message.metricId, writer.uint32(10).fork()).ldelim();
     }
-    for (const v of message.metrics) {
-      UsageMetric.encode(v!, writer.uint32(26).fork()).ldelim();
+    if (message.metrics !== undefined) {
+      UsageMetric.encode(message.metrics, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -291,14 +303,14 @@ export const LHTenantPartitionMonitor = {
             break;
           }
 
-          message.id = TenantId.decode(reader, reader.uint32());
+          message.metricId = MonitorConfigId.decode(reader, reader.uint32());
           continue;
-        case 3:
-          if (tag !== 26) {
+        case 2:
+          if (tag !== 18) {
             break;
           }
 
-          message.metrics.push(UsageMetric.decode(reader, reader.uint32()));
+          message.metrics = UsageMetric.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -314,8 +326,12 @@ export const LHTenantPartitionMonitor = {
   },
   fromPartial(object: DeepPartial<LHTenantPartitionMonitor>): LHTenantPartitionMonitor {
     const message = createBaseLHTenantPartitionMonitor();
-    message.id = (object.id !== undefined && object.id !== null) ? TenantId.fromPartial(object.id) : undefined;
-    message.metrics = object.metrics?.map((e) => UsageMetric.fromPartial(e)) || [];
+    message.metricId = (object.metricId !== undefined && object.metricId !== null)
+      ? MonitorConfigId.fromPartial(object.metricId)
+      : undefined;
+    message.metrics = (object.metrics !== undefined && object.metrics !== null)
+      ? UsageMetric.fromPartial(object.metrics)
+      : undefined;
     return message;
   },
 };

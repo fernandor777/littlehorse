@@ -23,12 +23,13 @@ export interface EnableMetricRequest {
 }
 
 export interface LHPartitionMonitor {
+  id: string;
   tenantPartitions: LHTenantPartitionMonitor[];
 }
 
 export interface LHTenantPartitionMonitor {
-  id: TenantId | undefined;
-  metrics: UsageMetric[];
+  metricId: MonitorConfigId | undefined;
+  metrics: UsageMetric | undefined;
 }
 
 export interface UsageMetric {
@@ -278,13 +279,16 @@ export const EnableMetricRequest = {
 };
 
 function createBaseLHPartitionMonitor(): LHPartitionMonitor {
-  return { tenantPartitions: [] };
+  return { id: "", tenantPartitions: [] };
 }
 
 export const LHPartitionMonitor = {
   encode(message: LHPartitionMonitor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
     for (const v of message.tenantPartitions) {
-      LHTenantPartitionMonitor.encode(v!, writer.uint32(10).fork()).ldelim();
+      LHTenantPartitionMonitor.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -301,6 +305,13 @@ export const LHPartitionMonitor = {
             break;
           }
 
+          message.id = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.tenantPartitions.push(LHTenantPartitionMonitor.decode(reader, reader.uint32()));
           continue;
       }
@@ -314,6 +325,7 @@ export const LHPartitionMonitor = {
 
   fromJSON(object: any): LHPartitionMonitor {
     return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
       tenantPartitions: globalThis.Array.isArray(object?.tenantPartitions)
         ? object.tenantPartitions.map((e: any) => LHTenantPartitionMonitor.fromJSON(e))
         : [],
@@ -322,6 +334,9 @@ export const LHPartitionMonitor = {
 
   toJSON(message: LHPartitionMonitor): unknown {
     const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
     if (message.tenantPartitions?.length) {
       obj.tenantPartitions = message.tenantPartitions.map((e) => LHTenantPartitionMonitor.toJSON(e));
     }
@@ -333,22 +348,23 @@ export const LHPartitionMonitor = {
   },
   fromPartial<I extends Exact<DeepPartial<LHPartitionMonitor>, I>>(object: I): LHPartitionMonitor {
     const message = createBaseLHPartitionMonitor();
+    message.id = object.id ?? "";
     message.tenantPartitions = object.tenantPartitions?.map((e) => LHTenantPartitionMonitor.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseLHTenantPartitionMonitor(): LHTenantPartitionMonitor {
-  return { id: undefined, metrics: [] };
+  return { metricId: undefined, metrics: undefined };
 }
 
 export const LHTenantPartitionMonitor = {
   encode(message: LHTenantPartitionMonitor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== undefined) {
-      TenantId.encode(message.id, writer.uint32(10).fork()).ldelim();
+    if (message.metricId !== undefined) {
+      MonitorConfigId.encode(message.metricId, writer.uint32(10).fork()).ldelim();
     }
-    for (const v of message.metrics) {
-      UsageMetric.encode(v!, writer.uint32(26).fork()).ldelim();
+    if (message.metrics !== undefined) {
+      UsageMetric.encode(message.metrics, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -365,14 +381,14 @@ export const LHTenantPartitionMonitor = {
             break;
           }
 
-          message.id = TenantId.decode(reader, reader.uint32());
+          message.metricId = MonitorConfigId.decode(reader, reader.uint32());
           continue;
-        case 3:
-          if (tag !== 26) {
+        case 2:
+          if (tag !== 18) {
             break;
           }
 
-          message.metrics.push(UsageMetric.decode(reader, reader.uint32()));
+          message.metrics = UsageMetric.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -385,18 +401,18 @@ export const LHTenantPartitionMonitor = {
 
   fromJSON(object: any): LHTenantPartitionMonitor {
     return {
-      id: isSet(object.id) ? TenantId.fromJSON(object.id) : undefined,
-      metrics: globalThis.Array.isArray(object?.metrics) ? object.metrics.map((e: any) => UsageMetric.fromJSON(e)) : [],
+      metricId: isSet(object.metricId) ? MonitorConfigId.fromJSON(object.metricId) : undefined,
+      metrics: isSet(object.metrics) ? UsageMetric.fromJSON(object.metrics) : undefined,
     };
   },
 
   toJSON(message: LHTenantPartitionMonitor): unknown {
     const obj: any = {};
-    if (message.id !== undefined) {
-      obj.id = TenantId.toJSON(message.id);
+    if (message.metricId !== undefined) {
+      obj.metricId = MonitorConfigId.toJSON(message.metricId);
     }
-    if (message.metrics?.length) {
-      obj.metrics = message.metrics.map((e) => UsageMetric.toJSON(e));
+    if (message.metrics !== undefined) {
+      obj.metrics = UsageMetric.toJSON(message.metrics);
     }
     return obj;
   },
@@ -406,8 +422,12 @@ export const LHTenantPartitionMonitor = {
   },
   fromPartial<I extends Exact<DeepPartial<LHTenantPartitionMonitor>, I>>(object: I): LHTenantPartitionMonitor {
     const message = createBaseLHTenantPartitionMonitor();
-    message.id = (object.id !== undefined && object.id !== null) ? TenantId.fromPartial(object.id) : undefined;
-    message.metrics = object.metrics?.map((e) => UsageMetric.fromPartial(e)) || [];
+    message.metricId = (object.metricId !== undefined && object.metricId !== null)
+      ? MonitorConfigId.fromPartial(object.metricId)
+      : undefined;
+    message.metrics = (object.metrics !== undefined && object.metrics !== null)
+      ? UsageMetric.fromPartial(object.metrics)
+      : undefined;
     return message;
   },
 };
