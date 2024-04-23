@@ -67,12 +67,13 @@ public final class Metrics {
       "e.LHTenantPartitionMonitor\"h\n\030LHTenantPa" +
       "rtitionMonitor\022!\n\002id\030\001 \001(\0132\025.littlehorse" +
       ".TenantId\022)\n\007metrics\030\003 \003(\0132\030.littlehorse" +
-      ".UsageMetric\"\212\001\n\013UsageMetric\022\n\n\002id\030\001 \001(\t" +
-      "\022\r\n\005value\030\002 \001(\003\0220\n\014window_start\030\003 \001(\0132\032." +
-      "google.protobuf.Timestamp\022.\n\nwindow_end\030" +
-      "\004 \001(\0132\032.google.protobuf.TimestampBG\n\037io." +
-      "littlehorse.sdk.common.protoP\001Z\007.;model\252" +
-      "\002\030LittleHorse.Common.Protob\006proto3"
+      ".UsageMetric\"\257\001\n\013UsageMetric\022/\n\tmetric_i" +
+      "d\030\001 \001(\0132\034.littlehorse.MonitorConfigId\022\r\n" +
+      "\005value\030\002 \001(\003\0220\n\014window_start\030\003 \001(\0132\032.goo" +
+      "gle.protobuf.Timestamp\022.\n\nwindow_end\030\004 \001" +
+      "(\0132\032.google.protobuf.TimestampBG\n\037io.lit" +
+      "tlehorse.sdk.common.protoP\001Z\007.;model\252\002\030L" +
+      "ittleHorse.Common.Protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -115,7 +116,7 @@ public final class Metrics {
     internal_static_littlehorse_UsageMetric_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_littlehorse_UsageMetric_descriptor,
-        new java.lang.String[] { "Id", "Value", "WindowStart", "WindowEnd", });
+        new java.lang.String[] { "MetricId", "Value", "WindowStart", "WindowEnd", });
     com.google.protobuf.TimestampProto.getDescriptor();
     io.littlehorse.sdk.common.proto.ObjectId.getDescriptor();
   }

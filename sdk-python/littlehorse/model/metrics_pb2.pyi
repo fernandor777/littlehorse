@@ -48,13 +48,13 @@ class LHTenantPartitionMonitor(_message.Message):
     def __init__(self, id: _Optional[_Union[_object_id_pb2.TenantId, _Mapping]] = ..., metrics: _Optional[_Iterable[_Union[UsageMetric, _Mapping]]] = ...) -> None: ...
 
 class UsageMetric(_message.Message):
-    __slots__ = ["id", "value", "window_start", "window_end"]
-    ID_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["metric_id", "value", "window_start", "window_end"]
+    METRIC_ID_FIELD_NUMBER: _ClassVar[int]
     VALUE_FIELD_NUMBER: _ClassVar[int]
     WINDOW_START_FIELD_NUMBER: _ClassVar[int]
     WINDOW_END_FIELD_NUMBER: _ClassVar[int]
-    id: str
+    metric_id: MonitorConfigId
     value: int
     window_start: _timestamp_pb2.Timestamp
     window_end: _timestamp_pb2.Timestamp
-    def __init__(self, id: _Optional[str] = ..., value: _Optional[int] = ..., window_start: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., window_end: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, metric_id: _Optional[_Union[MonitorConfigId, _Mapping]] = ..., value: _Optional[int] = ..., window_start: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., window_end: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...

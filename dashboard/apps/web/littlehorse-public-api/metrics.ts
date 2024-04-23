@@ -32,7 +32,7 @@ export interface LHTenantPartitionMonitor {
 }
 
 export interface UsageMetric {
-  id: string;
+  metricId: MonitorConfigId | undefined;
   value: number;
   windowStart: string | undefined;
   windowEnd: string | undefined;
@@ -413,13 +413,13 @@ export const LHTenantPartitionMonitor = {
 };
 
 function createBaseUsageMetric(): UsageMetric {
-  return { id: "", value: 0, windowStart: undefined, windowEnd: undefined };
+  return { metricId: undefined, value: 0, windowStart: undefined, windowEnd: undefined };
 }
 
 export const UsageMetric = {
   encode(message: UsageMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.metricId !== undefined) {
+      MonitorConfigId.encode(message.metricId, writer.uint32(10).fork()).ldelim();
     }
     if (message.value !== 0) {
       writer.uint32(16).int64(message.value);
@@ -445,7 +445,7 @@ export const UsageMetric = {
             break;
           }
 
-          message.id = reader.string();
+          message.metricId = MonitorConfigId.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 16) {
@@ -479,7 +479,7 @@ export const UsageMetric = {
 
   fromJSON(object: any): UsageMetric {
     return {
-      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      metricId: isSet(object.metricId) ? MonitorConfigId.fromJSON(object.metricId) : undefined,
       value: isSet(object.value) ? globalThis.Number(object.value) : 0,
       windowStart: isSet(object.windowStart) ? globalThis.String(object.windowStart) : undefined,
       windowEnd: isSet(object.windowEnd) ? globalThis.String(object.windowEnd) : undefined,
@@ -488,8 +488,8 @@ export const UsageMetric = {
 
   toJSON(message: UsageMetric): unknown {
     const obj: any = {};
-    if (message.id !== "") {
-      obj.id = message.id;
+    if (message.metricId !== undefined) {
+      obj.metricId = MonitorConfigId.toJSON(message.metricId);
     }
     if (message.value !== 0) {
       obj.value = Math.round(message.value);
@@ -508,7 +508,9 @@ export const UsageMetric = {
   },
   fromPartial<I extends Exact<DeepPartial<UsageMetric>, I>>(object: I): UsageMetric {
     const message = createBaseUsageMetric();
-    message.id = object.id ?? "";
+    message.metricId = (object.metricId !== undefined && object.metricId !== null)
+      ? MonitorConfigId.fromPartial(object.metricId)
+      : undefined;
     message.value = object.value ?? 0;
     message.windowStart = object.windowStart ?? undefined;
     message.windowEnd = object.windowEnd ?? undefined;

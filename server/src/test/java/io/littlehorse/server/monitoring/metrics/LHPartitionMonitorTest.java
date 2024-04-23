@@ -54,7 +54,7 @@ class LHPartitionMonitorTest {
         partitionMonitor.record(measure2, mockContext);
         partitionMonitor.record(measure3, mockContext);
         UsageMetricModel metric = partitionMonitor.getMetric(metricId1).get();
-        assertThat(metric.getId()).isEqualTo(metricId1.getId());
+        assertThat(metric.getMetricId().getId()).isEqualTo(metricId1.getId());
         assertThat(metric.getValue()).isEqualTo(2L);
     }
 
@@ -77,7 +77,7 @@ class LHPartitionMonitorTest {
         partitionMonitor.record(measure2, mockContext);
         partitionMonitor.record(measure3, mockContext);
         UsageMetricModel metric = partitionMonitor.getMetric(metricId).get();
-        assertThat(metric.getId()).isEqualTo(metricId.getId());
+        assertThat(metric.getMetricId().getId()).isEqualTo(metricId.getId());
         assertThat(metric.getValue()).isEqualTo(2L);
     }
 
@@ -115,7 +115,7 @@ class LHPartitionMonitorTest {
         partitionMonitor.record(measure2, mockContext);
         partitionMonitor.record(measure3, mockContext);
         UsageMetricModel metric = partitionMonitor.getMetric(metricId).get();
-        assertThat(metric.getId()).isEqualTo(metricId.getId());
+        assertThat(metric.getMetricId().getId()).isEqualTo(metricId.getId());
         assertThat(metric.getValue()).isEqualTo(2L);
     }
 
@@ -133,7 +133,7 @@ class LHPartitionMonitorTest {
         LHTenantPartitionMonitor tenantPartitionMonitor = tenantPartitions.get(0);
         assertThat(tenantPartitionMonitor.getId()).isNotNull();
         UsageMetric metric = tenantPartitionMonitor.getMetrics(0);
-        assertThat(metric.getId()).isEqualTo("RunWfCommand");
+        assertThat(metric.getMetricId().getId()).isEqualTo("RunWfCommand");
         assertThat(metric.getValue()).isEqualTo(3L);
     }
 }

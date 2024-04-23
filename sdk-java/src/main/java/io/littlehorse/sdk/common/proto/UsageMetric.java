@@ -16,7 +16,6 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private UsageMetric() {
-    id_ = "";
   }
 
   @java.lang.Override
@@ -39,43 +38,30 @@ private static final long serialVersionUID = 0L;
             io.littlehorse.sdk.common.proto.UsageMetric.class, io.littlehorse.sdk.common.proto.UsageMetric.Builder.class);
   }
 
-  public static final int ID_FIELD_NUMBER = 1;
-  @SuppressWarnings("serial")
-  private volatile java.lang.Object id_ = "";
+  public static final int METRIC_ID_FIELD_NUMBER = 1;
+  private io.littlehorse.sdk.common.proto.MonitorConfigId metricId_;
   /**
-   * <code>string id = 1;</code>
-   * @return The id.
+   * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+   * @return Whether the metricId field is set.
    */
   @java.lang.Override
-  public java.lang.String getId() {
-    java.lang.Object ref = id_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      id_ = s;
-      return s;
-    }
+  public boolean hasMetricId() {
+    return metricId_ != null;
   }
   /**
-   * <code>string id = 1;</code>
-   * @return The bytes for id.
+   * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+   * @return The metricId.
    */
   @java.lang.Override
-  public com.google.protobuf.ByteString
-      getIdBytes() {
-    java.lang.Object ref = id_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      id_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  public io.littlehorse.sdk.common.proto.MonitorConfigId getMetricId() {
+    return metricId_ == null ? io.littlehorse.sdk.common.proto.MonitorConfigId.getDefaultInstance() : metricId_;
+  }
+  /**
+   * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+   */
+  @java.lang.Override
+  public io.littlehorse.sdk.common.proto.MonitorConfigIdOrBuilder getMetricIdOrBuilder() {
+    return metricId_ == null ? io.littlehorse.sdk.common.proto.MonitorConfigId.getDefaultInstance() : metricId_;
   }
 
   public static final int VALUE_FIELD_NUMBER = 2;
@@ -155,8 +141,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(id_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
+    if (metricId_ != null) {
+      output.writeMessage(1, getMetricId());
     }
     if (value_ != 0L) {
       output.writeInt64(2, value_);
@@ -176,8 +162,9 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(id_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
+    if (metricId_ != null) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(1, getMetricId());
     }
     if (value_ != 0L) {
       size += com.google.protobuf.CodedOutputStream
@@ -206,8 +193,11 @@ private static final long serialVersionUID = 0L;
     }
     io.littlehorse.sdk.common.proto.UsageMetric other = (io.littlehorse.sdk.common.proto.UsageMetric) obj;
 
-    if (!getId()
-        .equals(other.getId())) return false;
+    if (hasMetricId() != other.hasMetricId()) return false;
+    if (hasMetricId()) {
+      if (!getMetricId()
+          .equals(other.getMetricId())) return false;
+    }
     if (getValue()
         != other.getValue()) return false;
     if (hasWindowStart() != other.hasWindowStart()) return false;
@@ -231,8 +221,10 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + ID_FIELD_NUMBER;
-    hash = (53 * hash) + getId().hashCode();
+    if (hasMetricId()) {
+      hash = (37 * hash) + METRIC_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getMetricId().hashCode();
+    }
     hash = (37 * hash) + VALUE_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getValue());
@@ -375,7 +367,11 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
-      id_ = "";
+      metricId_ = null;
+      if (metricIdBuilder_ != null) {
+        metricIdBuilder_.dispose();
+        metricIdBuilder_ = null;
+      }
       value_ = 0L;
       windowStart_ = null;
       if (windowStartBuilder_ != null) {
@@ -421,7 +417,9 @@ private static final long serialVersionUID = 0L;
     private void buildPartial0(io.littlehorse.sdk.common.proto.UsageMetric result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.id_ = id_;
+        result.metricId_ = metricIdBuilder_ == null
+            ? metricId_
+            : metricIdBuilder_.build();
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.value_ = value_;
@@ -482,10 +480,8 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(io.littlehorse.sdk.common.proto.UsageMetric other) {
       if (other == io.littlehorse.sdk.common.proto.UsageMetric.getDefaultInstance()) return this;
-      if (!other.getId().isEmpty()) {
-        id_ = other.id_;
-        bitField0_ |= 0x00000001;
-        onChanged();
+      if (other.hasMetricId()) {
+        mergeMetricId(other.getMetricId());
       }
       if (other.getValue() != 0L) {
         setValue(other.getValue());
@@ -523,7 +519,9 @@ private static final long serialVersionUID = 0L;
               done = true;
               break;
             case 10: {
-              id_ = input.readStringRequireUtf8();
+              input.readMessage(
+                  getMetricIdFieldBuilder().getBuilder(),
+                  extensionRegistry);
               bitField0_ |= 0x00000001;
               break;
             } // case 10
@@ -563,76 +561,123 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private java.lang.Object id_ = "";
+    private io.littlehorse.sdk.common.proto.MonitorConfigId metricId_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        io.littlehorse.sdk.common.proto.MonitorConfigId, io.littlehorse.sdk.common.proto.MonitorConfigId.Builder, io.littlehorse.sdk.common.proto.MonitorConfigIdOrBuilder> metricIdBuilder_;
     /**
-     * <code>string id = 1;</code>
-     * @return The id.
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+     * @return Whether the metricId field is set.
      */
-    public java.lang.String getId() {
-      java.lang.Object ref = id_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        id_ = s;
-        return s;
+    public boolean hasMetricId() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+     * @return The metricId.
+     */
+    public io.littlehorse.sdk.common.proto.MonitorConfigId getMetricId() {
+      if (metricIdBuilder_ == null) {
+        return metricId_ == null ? io.littlehorse.sdk.common.proto.MonitorConfigId.getDefaultInstance() : metricId_;
       } else {
-        return (java.lang.String) ref;
+        return metricIdBuilder_.getMessage();
       }
     }
     /**
-     * <code>string id = 1;</code>
-     * @return The bytes for id.
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
      */
-    public com.google.protobuf.ByteString
-        getIdBytes() {
-      java.lang.Object ref = id_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        id_ = b;
-        return b;
+    public Builder setMetricId(io.littlehorse.sdk.common.proto.MonitorConfigId value) {
+      if (metricIdBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        metricId_ = value;
       } else {
-        return (com.google.protobuf.ByteString) ref;
+        metricIdBuilder_.setMessage(value);
       }
-    }
-    /**
-     * <code>string id = 1;</code>
-     * @param value The id to set.
-     * @return This builder for chaining.
-     */
-    public Builder setId(
-        java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      id_ = value;
       bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
     /**
-     * <code>string id = 1;</code>
-     * @return This builder for chaining.
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
      */
-    public Builder clearId() {
-      id_ = getDefaultInstance().getId();
+    public Builder setMetricId(
+        io.littlehorse.sdk.common.proto.MonitorConfigId.Builder builderForValue) {
+      if (metricIdBuilder_ == null) {
+        metricId_ = builderForValue.build();
+      } else {
+        metricIdBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000001;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+     */
+    public Builder mergeMetricId(io.littlehorse.sdk.common.proto.MonitorConfigId value) {
+      if (metricIdBuilder_ == null) {
+        if (((bitField0_ & 0x00000001) != 0) &&
+          metricId_ != null &&
+          metricId_ != io.littlehorse.sdk.common.proto.MonitorConfigId.getDefaultInstance()) {
+          getMetricIdBuilder().mergeFrom(value);
+        } else {
+          metricId_ = value;
+        }
+      } else {
+        metricIdBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000001;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+     */
+    public Builder clearMetricId() {
       bitField0_ = (bitField0_ & ~0x00000001);
+      metricId_ = null;
+      if (metricIdBuilder_ != null) {
+        metricIdBuilder_.dispose();
+        metricIdBuilder_ = null;
+      }
       onChanged();
       return this;
     }
     /**
-     * <code>string id = 1;</code>
-     * @param value The bytes for id to set.
-     * @return This builder for chaining.
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
      */
-    public Builder setIdBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) { throw new NullPointerException(); }
-      checkByteStringIsUtf8(value);
-      id_ = value;
+    public io.littlehorse.sdk.common.proto.MonitorConfigId.Builder getMetricIdBuilder() {
       bitField0_ |= 0x00000001;
       onChanged();
-      return this;
+      return getMetricIdFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+     */
+    public io.littlehorse.sdk.common.proto.MonitorConfigIdOrBuilder getMetricIdOrBuilder() {
+      if (metricIdBuilder_ != null) {
+        return metricIdBuilder_.getMessageOrBuilder();
+      } else {
+        return metricId_ == null ?
+            io.littlehorse.sdk.common.proto.MonitorConfigId.getDefaultInstance() : metricId_;
+      }
+    }
+    /**
+     * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        io.littlehorse.sdk.common.proto.MonitorConfigId, io.littlehorse.sdk.common.proto.MonitorConfigId.Builder, io.littlehorse.sdk.common.proto.MonitorConfigIdOrBuilder> 
+        getMetricIdFieldBuilder() {
+      if (metricIdBuilder_ == null) {
+        metricIdBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            io.littlehorse.sdk.common.proto.MonitorConfigId, io.littlehorse.sdk.common.proto.MonitorConfigId.Builder, io.littlehorse.sdk.common.proto.MonitorConfigIdOrBuilder>(
+                getMetricId(),
+                getParentForChildren(),
+                isClean());
+        metricId_ = null;
+      }
+      return metricIdBuilder_;
     }
 
     private long value_ ;

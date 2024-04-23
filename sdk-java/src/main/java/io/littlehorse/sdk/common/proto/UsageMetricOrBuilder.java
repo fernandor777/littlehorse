@@ -8,16 +8,19 @@ public interface UsageMetricOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string id = 1;</code>
-   * @return The id.
+   * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+   * @return Whether the metricId field is set.
    */
-  java.lang.String getId();
+  boolean hasMetricId();
   /**
-   * <code>string id = 1;</code>
-   * @return The bytes for id.
+   * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+   * @return The metricId.
    */
-  com.google.protobuf.ByteString
-      getIdBytes();
+  io.littlehorse.sdk.common.proto.MonitorConfigId getMetricId();
+  /**
+   * <code>.littlehorse.MonitorConfigId metric_id = 1;</code>
+   */
+  io.littlehorse.sdk.common.proto.MonitorConfigIdOrBuilder getMetricIdOrBuilder();
 
   /**
    * <code>int64 value = 2;</code>

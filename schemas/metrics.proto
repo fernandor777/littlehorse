@@ -35,7 +35,7 @@ message LHTenantPartitionMonitor {
 }
 
 message UsageMetric {
-	string id = 1;
+	MonitorConfigId metric_id = 1;
 	int64 value = 2;
 	google.protobuf.Timestamp window_start = 3;
 	google.protobuf.Timestamp window_end = 4;

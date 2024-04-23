@@ -32,7 +32,7 @@ export interface LHTenantPartitionMonitor {
 }
 
 export interface UsageMetric {
-  id: string;
+  metricId: MonitorConfigId | undefined;
   value: number;
   windowStart: string | undefined;
   windowEnd: string | undefined;
@@ -321,13 +321,13 @@ export const LHTenantPartitionMonitor = {
 };
 
 function createBaseUsageMetric(): UsageMetric {
-  return { id: "", value: 0, windowStart: undefined, windowEnd: undefined };
+  return { metricId: undefined, value: 0, windowStart: undefined, windowEnd: undefined };
 }
 
 export const UsageMetric = {
   encode(message: UsageMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.metricId !== undefined) {
+      MonitorConfigId.encode(message.metricId, writer.uint32(10).fork()).ldelim();
     }
     if (message.value !== 0) {
       writer.uint32(16).int64(message.value);
@@ -353,7 +353,7 @@ export const UsageMetric = {
             break;
           }
 
-          message.id = reader.string();
+          message.metricId = MonitorConfigId.decode(reader, reader.uint32());
           continue;
         case 2:
           if (tag !== 16) {
@@ -390,7 +390,9 @@ export const UsageMetric = {
   },
   fromPartial(object: DeepPartial<UsageMetric>): UsageMetric {
     const message = createBaseUsageMetric();
-    message.id = object.id ?? "";
+    message.metricId = (object.metricId !== undefined && object.metricId !== null)
+      ? MonitorConfigId.fromPartial(object.metricId)
+      : undefined;
     message.value = object.value ?? 0;
     message.windowStart = object.windowStart ?? undefined;
     message.windowEnd = object.windowEnd ?? undefined;

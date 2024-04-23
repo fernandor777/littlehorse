@@ -28,8 +28,8 @@ import org.apache.kafka.streams.processor.TaskId;
 public class LHPartitionMonitorMonitor extends Storeable<LHPartitionMonitor> {
     private TaskId taskId;
 
-    private Map<MonitorConfigIdModel, UsageMetricModel> metrics = new HashMap<>();
-    private Map<MonitorConfigIdModel, MonitorConfigModel> configs = new HashMap<>();
+    private final Map<MonitorConfigIdModel, UsageMetricModel> metrics = new HashMap<>();
+    private final Map<MonitorConfigIdModel, MonitorConfigModel> configs = new HashMap<>();
 
     public LHPartitionMonitorMonitor(TaskId taskId) {
         this.taskId = taskId;
@@ -80,7 +80,7 @@ public class LHPartitionMonitorMonitor extends Storeable<LHPartitionMonitor> {
         LocalDateTime windowEndLocalTime = calculateWindowEnd(windowStart, config.getWindowLength());
         Date windowEnd =
                 Date.from(windowEndLocalTime.toInstant(OffsetDateTime.now().getOffset()));
-        return Optional.of(new UsageMetricModel(config.getMetricId().getId(), 1L, windowStart, windowEnd));
+        return Optional.of(new UsageMetricModel(config.getMetricId(), 1L, windowStart, windowEnd));
     }
 
     //
