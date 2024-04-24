@@ -59,7 +59,9 @@ public class UsageMetricModel extends LHSerializable<UsageMetric> implements Rep
     }
 
     @Override
-    public void process(TenantScopedStore repartitionedStore, ProcessorContext<Void, Void> ctx) {}
+    public void process(TenantScopedStore repartitionedStore, ProcessorContext<Void, Void> ctx) {
+        System.out.println("processing a new metric for " + metricId.getId() + " value = " + value);
+    }
 
     @Override
     public String getPartitionKey() {

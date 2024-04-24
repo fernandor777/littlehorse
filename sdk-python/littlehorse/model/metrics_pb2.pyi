@@ -60,3 +60,15 @@ class UsageMetric(_message.Message):
     window_start: _timestamp_pb2.Timestamp
     window_end: _timestamp_pb2.Timestamp
     def __init__(self, metric_id: _Optional[_Union[MonitorConfigId, _Mapping]] = ..., value: _Optional[int] = ..., window_start: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., window_end: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class LatestMetric(_message.Message):
+    __slots__ = ["id", "value", "window_start", "window_end"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    VALUE_FIELD_NUMBER: _ClassVar[int]
+    WINDOW_START_FIELD_NUMBER: _ClassVar[int]
+    WINDOW_END_FIELD_NUMBER: _ClassVar[int]
+    id: _object_id_pb2.LatestMetricId
+    value: int
+    window_start: _timestamp_pb2.Timestamp
+    window_end: _timestamp_pb2.Timestamp
+    def __init__(self, id: _Optional[_Union[_object_id_pb2.LatestMetricId, _Mapping]] = ..., value: _Optional[int] = ..., window_start: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., window_end: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...

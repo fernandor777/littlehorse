@@ -99,5 +99,20 @@ public interface RepartitionCommandPbOrBuilder extends
    */
   io.littlehorse.common.proto.AggregateTaskMetricsOrBuilder getAggregateTaskMetricsOrBuilder();
 
+  /**
+   * <code>.littlehorse.UsageMetric usage_metric = 9;</code>
+   * @return Whether the usageMetric field is set.
+   */
+  boolean hasUsageMetric();
+  /**
+   * <code>.littlehorse.UsageMetric usage_metric = 9;</code>
+   * @return The usageMetric.
+   */
+  io.littlehorse.sdk.common.proto.UsageMetric getUsageMetric();
+  /**
+   * <code>.littlehorse.UsageMetric usage_metric = 9;</code>
+   */
+  io.littlehorse.sdk.common.proto.UsageMetricOrBuilder getUsageMetricOrBuilder();
+
   io.littlehorse.common.proto.RepartitionCommandPb.RepartitionCommandCase getRepartitionCommandCase();
 }

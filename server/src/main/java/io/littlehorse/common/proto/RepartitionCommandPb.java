@@ -54,6 +54,7 @@ private static final long serialVersionUID = 0L;
     REMOVE_REMOTE_TAG(6),
     AGGREGATE_WF_METRICS(7),
     AGGREGATE_TASK_METRICS(8),
+    USAGE_METRIC(9),
     REPARTITIONCOMMAND_NOT_SET(0);
     private final int value;
     private RepartitionCommandCase(int value) {
@@ -75,6 +76,7 @@ private static final long serialVersionUID = 0L;
         case 6: return REMOVE_REMOTE_TAG;
         case 7: return AGGREGATE_WF_METRICS;
         case 8: return AGGREGATE_TASK_METRICS;
+        case 9: return USAGE_METRIC;
         case 0: return REPARTITIONCOMMAND_NOT_SET;
         default: return null;
       }
@@ -287,6 +289,37 @@ private static final long serialVersionUID = 0L;
     return io.littlehorse.common.proto.AggregateTaskMetrics.getDefaultInstance();
   }
 
+  public static final int USAGE_METRIC_FIELD_NUMBER = 9;
+  /**
+   * <code>.littlehorse.UsageMetric usage_metric = 9;</code>
+   * @return Whether the usageMetric field is set.
+   */
+  @java.lang.Override
+  public boolean hasUsageMetric() {
+    return repartitionCommandCase_ == 9;
+  }
+  /**
+   * <code>.littlehorse.UsageMetric usage_metric = 9;</code>
+   * @return The usageMetric.
+   */
+  @java.lang.Override
+  public io.littlehorse.sdk.common.proto.UsageMetric getUsageMetric() {
+    if (repartitionCommandCase_ == 9) {
+       return (io.littlehorse.sdk.common.proto.UsageMetric) repartitionCommand_;
+    }
+    return io.littlehorse.sdk.common.proto.UsageMetric.getDefaultInstance();
+  }
+  /**
+   * <code>.littlehorse.UsageMetric usage_metric = 9;</code>
+   */
+  @java.lang.Override
+  public io.littlehorse.sdk.common.proto.UsageMetricOrBuilder getUsageMetricOrBuilder() {
+    if (repartitionCommandCase_ == 9) {
+       return (io.littlehorse.sdk.common.proto.UsageMetric) repartitionCommand_;
+    }
+    return io.littlehorse.sdk.common.proto.UsageMetric.getDefaultInstance();
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -319,6 +352,9 @@ private static final long serialVersionUID = 0L;
     if (repartitionCommandCase_ == 8) {
       output.writeMessage(8, (io.littlehorse.common.proto.AggregateTaskMetrics) repartitionCommand_);
     }
+    if (repartitionCommandCase_ == 9) {
+      output.writeMessage(9, (io.littlehorse.sdk.common.proto.UsageMetric) repartitionCommand_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -350,6 +386,10 @@ private static final long serialVersionUID = 0L;
     if (repartitionCommandCase_ == 8) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(8, (io.littlehorse.common.proto.AggregateTaskMetrics) repartitionCommand_);
+    }
+    if (repartitionCommandCase_ == 9) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(9, (io.littlehorse.sdk.common.proto.UsageMetric) repartitionCommand_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -394,6 +434,10 @@ private static final long serialVersionUID = 0L;
         if (!getAggregateTaskMetrics()
             .equals(other.getAggregateTaskMetrics())) return false;
         break;
+      case 9:
+        if (!getUsageMetric()
+            .equals(other.getUsageMetric())) return false;
+        break;
       case 0:
       default:
     }
@@ -432,6 +476,10 @@ private static final long serialVersionUID = 0L;
       case 8:
         hash = (37 * hash) + AGGREGATE_TASK_METRICS_FIELD_NUMBER;
         hash = (53 * hash) + getAggregateTaskMetrics().hashCode();
+        break;
+      case 9:
+        hash = (37 * hash) + USAGE_METRIC_FIELD_NUMBER;
+        hash = (53 * hash) + getUsageMetric().hashCode();
         break;
       case 0:
       default:
@@ -589,6 +637,9 @@ private static final long serialVersionUID = 0L;
       if (aggregateTaskMetricsBuilder_ != null) {
         aggregateTaskMetricsBuilder_.clear();
       }
+      if (usageMetricBuilder_ != null) {
+        usageMetricBuilder_.clear();
+      }
       repartitionCommandCase_ = 0;
       repartitionCommand_ = null;
       return this;
@@ -656,6 +707,10 @@ private static final long serialVersionUID = 0L;
       if (repartitionCommandCase_ == 8 &&
           aggregateTaskMetricsBuilder_ != null) {
         result.repartitionCommand_ = aggregateTaskMetricsBuilder_.build();
+      }
+      if (repartitionCommandCase_ == 9 &&
+          usageMetricBuilder_ != null) {
+        result.repartitionCommand_ = usageMetricBuilder_.build();
       }
     }
 
@@ -728,6 +783,10 @@ private static final long serialVersionUID = 0L;
           mergeAggregateTaskMetrics(other.getAggregateTaskMetrics());
           break;
         }
+        case USAGE_METRIC: {
+          mergeUsageMetric(other.getUsageMetric());
+          break;
+        }
         case REPARTITIONCOMMAND_NOT_SET: {
           break;
         }
@@ -798,6 +857,13 @@ private static final long serialVersionUID = 0L;
               repartitionCommandCase_ = 8;
               break;
             } // case 66
+            case 74: {
+              input.readMessage(
+                  getUsageMetricFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              repartitionCommandCase_ = 9;
+              break;
+            } // case 74
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1594,6 +1660,148 @@ private static final long serialVersionUID = 0L;
       repartitionCommandCase_ = 8;
       onChanged();
       return aggregateTaskMetricsBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        io.littlehorse.sdk.common.proto.UsageMetric, io.littlehorse.sdk.common.proto.UsageMetric.Builder, io.littlehorse.sdk.common.proto.UsageMetricOrBuilder> usageMetricBuilder_;
+    /**
+     * <code>.littlehorse.UsageMetric usage_metric = 9;</code>
+     * @return Whether the usageMetric field is set.
+     */
+    @java.lang.Override
+    public boolean hasUsageMetric() {
+      return repartitionCommandCase_ == 9;
+    }
+    /**
+     * <code>.littlehorse.UsageMetric usage_metric = 9;</code>
+     * @return The usageMetric.
+     */
+    @java.lang.Override
+    public io.littlehorse.sdk.common.proto.UsageMetric getUsageMetric() {
+      if (usageMetricBuilder_ == null) {
+        if (repartitionCommandCase_ == 9) {
+          return (io.littlehorse.sdk.common.proto.UsageMetric) repartitionCommand_;
+        }
+        return io.littlehorse.sdk.common.proto.UsageMetric.getDefaultInstance();
+      } else {
+        if (repartitionCommandCase_ == 9) {
+          return usageMetricBuilder_.getMessage();
+        }
+        return io.littlehorse.sdk.common.proto.UsageMetric.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.littlehorse.UsageMetric usage_metric = 9;</code>
+     */
+    public Builder setUsageMetric(io.littlehorse.sdk.common.proto.UsageMetric value) {
+      if (usageMetricBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        repartitionCommand_ = value;
+        onChanged();
+      } else {
+        usageMetricBuilder_.setMessage(value);
+      }
+      repartitionCommandCase_ = 9;
+      return this;
+    }
+    /**
+     * <code>.littlehorse.UsageMetric usage_metric = 9;</code>
+     */
+    public Builder setUsageMetric(
+        io.littlehorse.sdk.common.proto.UsageMetric.Builder builderForValue) {
+      if (usageMetricBuilder_ == null) {
+        repartitionCommand_ = builderForValue.build();
+        onChanged();
+      } else {
+        usageMetricBuilder_.setMessage(builderForValue.build());
+      }
+      repartitionCommandCase_ = 9;
+      return this;
+    }
+    /**
+     * <code>.littlehorse.UsageMetric usage_metric = 9;</code>
+     */
+    public Builder mergeUsageMetric(io.littlehorse.sdk.common.proto.UsageMetric value) {
+      if (usageMetricBuilder_ == null) {
+        if (repartitionCommandCase_ == 9 &&
+            repartitionCommand_ != io.littlehorse.sdk.common.proto.UsageMetric.getDefaultInstance()) {
+          repartitionCommand_ = io.littlehorse.sdk.common.proto.UsageMetric.newBuilder((io.littlehorse.sdk.common.proto.UsageMetric) repartitionCommand_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          repartitionCommand_ = value;
+        }
+        onChanged();
+      } else {
+        if (repartitionCommandCase_ == 9) {
+          usageMetricBuilder_.mergeFrom(value);
+        } else {
+          usageMetricBuilder_.setMessage(value);
+        }
+      }
+      repartitionCommandCase_ = 9;
+      return this;
+    }
+    /**
+     * <code>.littlehorse.UsageMetric usage_metric = 9;</code>
+     */
+    public Builder clearUsageMetric() {
+      if (usageMetricBuilder_ == null) {
+        if (repartitionCommandCase_ == 9) {
+          repartitionCommandCase_ = 0;
+          repartitionCommand_ = null;
+          onChanged();
+        }
+      } else {
+        if (repartitionCommandCase_ == 9) {
+          repartitionCommandCase_ = 0;
+          repartitionCommand_ = null;
+        }
+        usageMetricBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.littlehorse.UsageMetric usage_metric = 9;</code>
+     */
+    public io.littlehorse.sdk.common.proto.UsageMetric.Builder getUsageMetricBuilder() {
+      return getUsageMetricFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.littlehorse.UsageMetric usage_metric = 9;</code>
+     */
+    @java.lang.Override
+    public io.littlehorse.sdk.common.proto.UsageMetricOrBuilder getUsageMetricOrBuilder() {
+      if ((repartitionCommandCase_ == 9) && (usageMetricBuilder_ != null)) {
+        return usageMetricBuilder_.getMessageOrBuilder();
+      } else {
+        if (repartitionCommandCase_ == 9) {
+          return (io.littlehorse.sdk.common.proto.UsageMetric) repartitionCommand_;
+        }
+        return io.littlehorse.sdk.common.proto.UsageMetric.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.littlehorse.UsageMetric usage_metric = 9;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        io.littlehorse.sdk.common.proto.UsageMetric, io.littlehorse.sdk.common.proto.UsageMetric.Builder, io.littlehorse.sdk.common.proto.UsageMetricOrBuilder> 
+        getUsageMetricFieldBuilder() {
+      if (usageMetricBuilder_ == null) {
+        if (!(repartitionCommandCase_ == 9)) {
+          repartitionCommand_ = io.littlehorse.sdk.common.proto.UsageMetric.getDefaultInstance();
+        }
+        usageMetricBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            io.littlehorse.sdk.common.proto.UsageMetric, io.littlehorse.sdk.common.proto.UsageMetric.Builder, io.littlehorse.sdk.common.proto.UsageMetricOrBuilder>(
+                (io.littlehorse.sdk.common.proto.UsageMetric) repartitionCommand_,
+                getParentForChildren(),
+                isClean());
+        repartitionCommand_ = null;
+      }
+      repartitionCommandCase_ = 9;
+      onChanged();
+      return usageMetricBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

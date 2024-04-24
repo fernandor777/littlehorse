@@ -138,6 +138,7 @@ message RepartitionCommandPb {
         RemoveRemoteTagPb remove_remote_tag = 6;
         AggregateWfMetrics aggregate_wf_metrics = 7;
         AggregateTaskMetrics aggregate_task_metrics = 8;
+        UsageMetric usage_metric = 9;
     }
 }
 

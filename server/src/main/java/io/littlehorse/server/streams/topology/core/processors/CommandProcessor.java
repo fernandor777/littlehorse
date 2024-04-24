@@ -23,6 +23,7 @@ import io.littlehorse.sdk.common.proto.Tenant;
 import io.littlehorse.server.KafkaStreamsServerImpl;
 import io.littlehorse.server.monitoring.metrics.LHPartitionMonitorModel;
 import io.littlehorse.server.monitoring.metrics.UsageMeasure;
+import io.littlehorse.server.monitoring.metrics.UsageMetricModel;
 import io.littlehorse.server.streams.ServerTopology;
 import io.littlehorse.server.streams.store.LHIterKeyValue;
 import io.littlehorse.server.streams.store.LHKeyValueIterator;
@@ -36,6 +37,7 @@ import io.littlehorse.server.streams.topology.core.ProcessorExecutionContext;
 import io.littlehorse.server.streams.util.HeadersUtil;
 import io.littlehorse.server.streams.util.MetadataCache;
 import java.time.Duration;
+import java.util.Collection;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.header.Headers;
@@ -77,7 +79,7 @@ public class CommandProcessor implements Processor<String, Command, String, Comm
         this.nativeStore = ctx.getStateStore(ServerTopology.CORE_STORE);
         this.globalStore = ctx.getStateStore(ServerTopology.GLOBAL_METADATA_STORE);
         onPartitionClaimed();
-        ctx.schedule(Duration.ofSeconds(30), PunctuationType.WALL_CLOCK_TIME, this::forwardMetricsUpdates);
+        ctx.schedule(Duration.ofSeconds(30), PunctuationType.WALL_CLOCK_TIME, this::forwardMetrics);
         monitor = new LHPartitionMonitorModel(ctx.taskId());
     }
 
@@ -188,6 +190,13 @@ public class CommandProcessor implements Processor<String, Command, String, Comm
     @Override
     public void close() {
         this.partitionIsClaimed = false;
+    }
+
+    private void forwardMetrics(long timestamp) {
+        Collection<UsageMetricModel> metrics = monitor.metrics();
+        for (UsageMetricModel metric : metrics) {
+            forwardMetricSubcommand(metric);
+        }
     }
 
     private void forwardMetricsUpdates(long timestamp) {

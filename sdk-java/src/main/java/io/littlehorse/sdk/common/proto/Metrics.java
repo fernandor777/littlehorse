@@ -44,6 +44,11 @@ public final class Metrics {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_littlehorse_UsageMetric_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_littlehorse_LatestMetric_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_littlehorse_LatestMetric_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -72,9 +77,13 @@ public final class Metrics {
       "lehorse.MonitorConfigId\022\r\n\005value\030\002 \001(\003\0220" +
       "\n\014window_start\030\003 \001(\0132\032.google.protobuf.T" +
       "imestamp\022.\n\nwindow_end\030\004 \001(\0132\032.google.pr" +
-      "otobuf.TimestampBG\n\037io.littlehorse.sdk.c" +
-      "ommon.protoP\001Z\007.;model\252\002\030LittleHorse.Com" +
-      "mon.Protob\006proto3"
+      "otobuf.Timestamp\"\250\001\n\014LatestMetric\022\'\n\002id\030" +
+      "\001 \001(\0132\033.littlehorse.LatestMetricId\022\r\n\005va" +
+      "lue\030\002 \001(\003\0220\n\014window_start\030\003 \001(\0132\032.google" +
+      ".protobuf.Timestamp\022.\n\nwindow_end\030\004 \001(\0132" +
+      "\032.google.protobuf.TimestampBG\n\037io.little" +
+      "horse.sdk.common.protoP\001Z\007.;model\252\002\030Litt" +
+      "leHorse.Common.Protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -118,6 +127,12 @@ public final class Metrics {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_littlehorse_UsageMetric_descriptor,
         new java.lang.String[] { "MetricId", "Value", "WindowStart", "WindowEnd", });
+    internal_static_littlehorse_LatestMetric_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_littlehorse_LatestMetric_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_littlehorse_LatestMetric_descriptor,
+        new java.lang.String[] { "Id", "Value", "WindowStart", "WindowEnd", });
     com.google.protobuf.TimestampProto.getDescriptor();
     io.littlehorse.sdk.common.proto.ObjectId.getDescriptor();
   }

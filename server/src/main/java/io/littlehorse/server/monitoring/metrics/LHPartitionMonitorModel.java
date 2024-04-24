@@ -9,7 +9,6 @@ import io.littlehorse.sdk.common.exception.LHSerdeError;
 import io.littlehorse.sdk.common.proto.LHPartitionMonitor;
 import io.littlehorse.sdk.common.proto.LHTenantPartitionMonitor;
 import io.littlehorse.sdk.common.proto.UsageMetric;
-import io.littlehorse.server.streams.stores.ClusterScopedStore;
 import io.littlehorse.server.streams.topology.core.ExecutionContext;
 import io.littlehorse.server.streams.topology.core.ProcessorExecutionContext;
 import java.time.Duration;
@@ -18,16 +17,14 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nullable;
-
-import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.processor.TaskId;
-import org.apache.kafka.streams.state.KeyValueStore;
 
 public class LHPartitionMonitorModel extends Storeable<LHPartitionMonitor> {
     private TaskId taskId;
@@ -140,13 +137,15 @@ public class LHPartitionMonitorModel extends Storeable<LHPartitionMonitor> {
 
     @Override
     public String getStoreKey() {
-        return null;
+        return taskId.toString();
     }
 
     @Override
     public StoreableType getType() {
-        return null;
+        return StoreableType.PARTITION_MONITOR;
     }
 
-    public void fordward(ProcessorExecutionContext context) {}
+    public Collection<UsageMetricModel> metrics() {
+        return metrics.values();
+    }
 }

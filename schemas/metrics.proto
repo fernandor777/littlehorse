@@ -41,3 +41,10 @@ message UsageMetric {
 	google.protobuf.Timestamp window_start = 3;
 	google.protobuf.Timestamp window_end = 4;
 }
+
+message LatestMetric {
+	LatestMetricId id = 1;
+	int64 value = 2;
+	google.protobuf.Timestamp window_start = 3;
+	google.protobuf.Timestamp window_end = 4;
+}

@@ -9,6 +9,7 @@ import io.littlehorse.common.model.repartitioncommand.repartitionsubcommand.Remo
 import io.littlehorse.common.proto.RepartitionCommandPb;
 import io.littlehorse.common.proto.RepartitionCommandPb.RepartitionCommandCase;
 import io.littlehorse.common.util.LHUtil;
+import io.littlehorse.server.monitoring.metrics.UsageMetricModel;
 import io.littlehorse.server.streams.stores.TenantScopedStore;
 import io.littlehorse.server.streams.topology.core.ExecutionContext;
 import java.util.Date;
@@ -28,6 +29,7 @@ public class RepartitionCommand extends LHSerializable<RepartitionCommandPb> {
     private RemoveRemoteTag removeRemoteTag;
     private AggregateWfMetricsModel aggregateWfMetrics;
     private AggregateTaskMetricsModel aggregateTaskMetrics;
+    private UsageMetricModel usageMetric;
 
     public Class<RepartitionCommandPb> getProtoBaseClass() {
         return RepartitionCommandPb.class;
@@ -54,6 +56,9 @@ public class RepartitionCommand extends LHSerializable<RepartitionCommandPb> {
         } else if (subCommand.getClass().equals(AggregateTaskMetricsModel.class)) {
             type = RepartitionCommandCase.AGGREGATE_TASK_METRICS;
             aggregateTaskMetrics = (AggregateTaskMetricsModel) subCommand;
+        } else if (subCommand.getClass().equals(UsageMetricModel.class)) {
+            type = RepartitionCommandCase.USAGE_METRIC;
+            usageMetric = (UsageMetricModel) subCommand;
         } else {
             throw new RuntimeException("Unknown class!");
         }
@@ -69,6 +74,8 @@ public class RepartitionCommand extends LHSerializable<RepartitionCommandPb> {
                 return aggregateWfMetrics;
             case AGGREGATE_TASK_METRICS:
                 return aggregateTaskMetrics;
+            case USAGE_METRIC:
+                return usageMetric;
             default:
                 throw new RuntimeException("Unrecognized!");
         }
@@ -95,6 +102,9 @@ public class RepartitionCommand extends LHSerializable<RepartitionCommandPb> {
                 break;
             case AGGREGATE_TASK_METRICS:
                 out.setAggregateTaskMetrics(aggregateTaskMetrics.toProto());
+                break;
+            case USAGE_METRIC:
+                out.setUsageMetric(usageMetric.toProto());
                 break;
             case REPARTITIONCOMMAND_NOT_SET:
                 throw new RuntimeException("Not possible");
@@ -124,6 +134,9 @@ public class RepartitionCommand extends LHSerializable<RepartitionCommandPb> {
             case AGGREGATE_TASK_METRICS:
                 aggregateTaskMetrics =
                         LHSerializable.fromProto(p.getAggregateTaskMetrics(), AggregateTaskMetricsModel.class, context);
+                break;
+            case USAGE_METRIC:
+                usageMetric = LHSerializable.fromProto(p.getUsageMetric(), UsageMetricModel.class, context);
                 break;
             case REPARTITIONCOMMAND_NOT_SET:
                 throw new RuntimeException("Not possible");

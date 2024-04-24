@@ -22,6 +22,7 @@ enum StoreableType {
     TAG = 5;
     PARTITION_METRICS = 6;
     METRIC_WINDOW = 7;
+    PARTITION_MONITOR = 8;
 }
 
 enum GetableClassEnum {
@@ -43,6 +44,7 @@ enum GetableClassEnum {
     WORKFLOW_EVENT_DEF = 15;
     WORKFLOW_EVENT = 16;
     MONITOR_CONFIG = 17;
+    LATEST_METRIC = 18;
 }
 
 message AttributePb {

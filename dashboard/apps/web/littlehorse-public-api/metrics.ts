@@ -2,7 +2,7 @@
 import Long from "long";
 import * as _m0 from "protobufjs/minimal";
 import { Timestamp } from "./google/protobuf/timestamp";
-import { TenantId } from "./object_id";
+import { LatestMetricId, TenantId } from "./object_id";
 
 export const protobufPackage = "littlehorse";
 
@@ -34,6 +34,13 @@ export interface LHTenantPartitionMonitor {
 
 export interface UsageMetric {
   metricId: MonitorConfigId | undefined;
+  value: number;
+  windowStart: string | undefined;
+  windowEnd: string | undefined;
+}
+
+export interface LatestMetric {
+  id: LatestMetricId | undefined;
   value: number;
   windowStart: string | undefined;
   windowEnd: string | undefined;
@@ -531,6 +538,110 @@ export const UsageMetric = {
     message.metricId = (object.metricId !== undefined && object.metricId !== null)
       ? MonitorConfigId.fromPartial(object.metricId)
       : undefined;
+    message.value = object.value ?? 0;
+    message.windowStart = object.windowStart ?? undefined;
+    message.windowEnd = object.windowEnd ?? undefined;
+    return message;
+  },
+};
+
+function createBaseLatestMetric(): LatestMetric {
+  return { id: undefined, value: 0, windowStart: undefined, windowEnd: undefined };
+}
+
+export const LatestMetric = {
+  encode(message: LatestMetric, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== undefined) {
+      LatestMetricId.encode(message.id, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.value !== 0) {
+      writer.uint32(16).int64(message.value);
+    }
+    if (message.windowStart !== undefined) {
+      Timestamp.encode(toTimestamp(message.windowStart), writer.uint32(26).fork()).ldelim();
+    }
+    if (message.windowEnd !== undefined) {
+      Timestamp.encode(toTimestamp(message.windowEnd), writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LatestMetric {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLatestMetric();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = LatestMetricId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.value = longToNumber(reader.int64() as Long);
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.windowStart = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.windowEnd = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LatestMetric {
+    return {
+      id: isSet(object.id) ? LatestMetricId.fromJSON(object.id) : undefined,
+      value: isSet(object.value) ? globalThis.Number(object.value) : 0,
+      windowStart: isSet(object.windowStart) ? globalThis.String(object.windowStart) : undefined,
+      windowEnd: isSet(object.windowEnd) ? globalThis.String(object.windowEnd) : undefined,
+    };
+  },
+
+  toJSON(message: LatestMetric): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = LatestMetricId.toJSON(message.id);
+    }
+    if (message.value !== 0) {
+      obj.value = Math.round(message.value);
+    }
+    if (message.windowStart !== undefined) {
+      obj.windowStart = message.windowStart;
+    }
+    if (message.windowEnd !== undefined) {
+      obj.windowEnd = message.windowEnd;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LatestMetric>, I>>(base?: I): LatestMetric {
+    return LatestMetric.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<LatestMetric>, I>>(object: I): LatestMetric {
+    const message = createBaseLatestMetric();
+    message.id = (object.id !== undefined && object.id !== null) ? LatestMetricId.fromPartial(object.id) : undefined;
     message.value = object.value ?? 0;
     message.windowStart = object.windowStart ?? undefined;
     message.windowEnd = object.windowEnd ?? undefined;

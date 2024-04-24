@@ -80,6 +80,10 @@ public enum GetableClassEnum
    * <code>MONITOR_CONFIG = 17;</code>
    */
   MONITOR_CONFIG(17),
+  /**
+   * <code>LATEST_METRIC = 18;</code>
+   */
+  LATEST_METRIC(18),
   UNRECOGNIZED(-1),
   ;
 
@@ -155,6 +159,10 @@ public enum GetableClassEnum
    * <code>MONITOR_CONFIG = 17;</code>
    */
   public static final int MONITOR_CONFIG_VALUE = 17;
+  /**
+   * <code>LATEST_METRIC = 18;</code>
+   */
+  public static final int LATEST_METRIC_VALUE = 18;
 
 
   public final int getNumber() {
@@ -199,6 +207,7 @@ public enum GetableClassEnum
       case 15: return WORKFLOW_EVENT_DEF;
       case 16: return WORKFLOW_EVENT;
       case 17: return MONITOR_CONFIG;
+      case 18: return LATEST_METRIC;
       default: return null;
     }
   }

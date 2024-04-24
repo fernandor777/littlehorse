@@ -13,7 +13,6 @@ import io.littlehorse.common.proto.Command;
 import io.littlehorse.sdk.common.proto.LHHostInfo;
 import io.littlehorse.server.KafkaStreamsServerImpl;
 import io.littlehorse.server.auth.InternalCallCredentials;
-import io.littlehorse.server.monitoring.metrics.LHPartitionMonitorModel;
 import io.littlehorse.server.streams.ServerTopology;
 import io.littlehorse.server.streams.storeinternals.GetableManager;
 import io.littlehorse.server.streams.storeinternals.ReadOnlyMetadataManager;
