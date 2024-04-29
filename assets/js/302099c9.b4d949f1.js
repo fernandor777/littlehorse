@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunklh_site=self.webpackChunklh_site||[]).push([[5942],{6389:e=>{e.exports=JSON.parse('{"label":"kubernetes","permalink":"/littlehorse/blog/tags/kubernetes","allTagsPath":"/littlehorse/blog/tags","count":1}')}}]);
