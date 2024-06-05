@@ -25,13 +25,13 @@ const Default: FC<SmoothStepEdgeProps> = ({
     borderRadius: pathOptions?.borderRadius,
     offset: pathOptions?.offset,
   })
-
+  
   return (
     <>
       <BaseEdge id={id} path={path} style={style} {...rest} />
       <EdgeLabelRenderer>
         <div
-          className="rounded-md bg-gray-200 px-2 text-xs text-gray-600"
+          className="rounded-md px-2 text-xs text-gray-600"
           style={{
             position: 'absolute',
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
