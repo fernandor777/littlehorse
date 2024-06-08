@@ -1,43 +1,8 @@
 package io.littlehorse.server.streams;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
-import java.util.function.BiPredicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.kafka.common.TopicPartition;
-import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.common.utils.Bytes;
-import org.apache.kafka.streams.KafkaStreams;
-import org.apache.kafka.streams.KeyQueryMetadata;
-import org.apache.kafka.streams.StoreQueryParameters;
-import org.apache.kafka.streams.StreamsMetadata;
-import org.apache.kafka.streams.TaskMetadata;
-import org.apache.kafka.streams.ThreadMetadata;
-import org.apache.kafka.streams.errors.InvalidStateStoreException;
-import org.apache.kafka.streams.processor.TaskId;
-import org.apache.kafka.streams.state.HostInfo;
-import org.apache.kafka.streams.state.QueryableStoreTypes;
-import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
-
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Empty;
 import com.google.protobuf.Message;
-
 import io.grpc.ChannelCredentials;
 import io.grpc.Context;
 import io.grpc.Grpc;
@@ -104,8 +69,40 @@ import io.littlehorse.server.streams.topology.core.ExecutionContext;
 import io.littlehorse.server.streams.topology.core.RequestExecutionContext;
 import io.littlehorse.server.streams.util.AsyncWaiters;
 import io.littlehorse.server.streams.util.MetadataCache;
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
+import java.util.function.BiPredicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.kafka.common.TopicPartition;
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.common.utils.Bytes;
+import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.KeyQueryMetadata;
+import org.apache.kafka.streams.StoreQueryParameters;
+import org.apache.kafka.streams.StreamsMetadata;
+import org.apache.kafka.streams.TaskMetadata;
+import org.apache.kafka.streams.ThreadMetadata;
+import org.apache.kafka.streams.errors.InvalidStateStoreException;
+import org.apache.kafka.streams.processor.TaskId;
+import org.apache.kafka.streams.state.HostInfo;
+import org.apache.kafka.streams.state.QueryableStoreTypes;
+import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 
 @Slf4j
 public class BackendInternalComms implements Closeable {
@@ -231,12 +228,13 @@ public class BackendInternalComms implements Closeable {
     }
 
     public void waitForCommand(AbstractCommand<?> command, StreamObserver<WaitForCommandResponse> observer) {
-        String storeName = switch (command.getStore()) {
-            case CORE -> ServerTopology.CORE_STORE;
-            case METADATA -> ServerTopology.METADATA_STORE;
-            case REPARTITION -> ServerTopology.CORE_REPARTITION_STORE;
-            case UNRECOGNIZED -> throw new LHApiException(Status.INTERNAL);
-        };
+        String storeName =
+                switch (command.getStore()) {
+                    case CORE -> ServerTopology.CORE_STORE;
+                    case METADATA -> ServerTopology.METADATA_STORE;
+                    case REPARTITION -> ServerTopology.CORE_REPARTITION_STORE;
+                    case UNRECOGNIZED -> throw new LHApiException(Status.INTERNAL);
+                };
         KeyQueryMetadata meta = lookupPartitionKey(storeName, command.getPartitionKey());
 
         /*
@@ -263,8 +261,8 @@ public class BackendInternalComms implements Closeable {
             localWaitForWfEvent(
                     InternalWaitForWfEventRequest.newBuilder().setRequest(req).build(), ctx);
         } else {
-            InternalWaitForWfEventRequest internalReq = InternalWaitForWfEventRequest.newBuilder().setRequest(req)
-                    .build();
+            InternalWaitForWfEventRequest internalReq =
+                    InternalWaitForWfEventRequest.newBuilder().setRequest(req).build();
             getInternalAsyncClient(meta.activeHost()).waitForWfEvent(internalReq, ctx);
         }
     }
@@ -279,8 +277,8 @@ public class BackendInternalComms implements Closeable {
 
     public LHHostInfo getAdvertisedHost(
             HostModel host, String listenerName, InternalCallCredentials internalCredentials) {
-        InternalGetAdvertisedHostsResponse advertisedHostsForHost = getPublicListenersForHost(
-                new HostInfo(host.host, host.port), internalCredentials);
+        InternalGetAdvertisedHostsResponse advertisedHostsForHost =
+                getPublicListenersForHost(new HostInfo(host.host, host.port), internalCredentials);
 
         LHHostInfo desiredHost = advertisedHostsForHost.getHostsOrDefault(listenerName, null);
         if (desiredHost == null) {
@@ -308,8 +306,7 @@ public class BackendInternalComms implements Closeable {
             } catch (StatusRuntimeException exn) {
                 log.warn("Host '{}:{}' unreachable: ", host.host, host.port, exn);
                 // The reason why we don'swallow the exception when one host is unreachable is
-                // that, when bootstrapping, other hosts could be in various states of
-                // degradation
+                // that, when bootstrapping, other hosts could be in various states of degradation
                 // (rebalancing, crashed, running, starting up, etc).
                 // Just because one host is down doesn't mean that the entire call to discover
                 // the rest of the cluster should fail; the Task Worker should still be able to
@@ -326,8 +323,8 @@ public class BackendInternalComms implements Closeable {
             return otherHosts.get(streamsHost);
         }
 
-        InternalGetAdvertisedHostsResponse info = getInternalClient(streamsHost, internalCredentials)
-                .getAdvertisedHosts(Empty.getDefaultInstance());
+        InternalGetAdvertisedHostsResponse info =
+                getInternalClient(streamsHost, internalCredentials).getAdvertisedHosts(Empty.getDefaultInstance());
 
         otherHosts.put(streamsHost, info);
         return info;
@@ -362,8 +359,8 @@ public class BackendInternalComms implements Closeable {
 
     public ReadOnlyKeyValueStore<String, Bytes> getRawStore(
             Integer specificPartition, boolean enableStaleStores, String storeName) {
-        StoreQueryParameters<ReadOnlyKeyValueStore<String, Bytes>> params = StoreQueryParameters
-                .fromNameAndType(storeName, QueryableStoreTypes.keyValueStore());
+        StoreQueryParameters<ReadOnlyKeyValueStore<String, Bytes>> params =
+                StoreQueryParameters.fromNameAndType(storeName, QueryableStoreTypes.keyValueStore());
 
         if (enableStaleStores) {
             params = params.enableStaleStores();
@@ -429,9 +426,10 @@ public class BackendInternalComms implements Closeable {
     private <U extends Message, T extends AbstractGetable<U>> T getObjectLocal(
             ObjectIdModel<?, U, T> objectId, Class<T> clazz, int partition) {
 
-        ReadOnlyTenantScopedStore store = getStore(partition, false, objectId.getStore().getStoreName());
-        StoredGetable<U, T> storeResult = (StoredGetable<U, T>) store.get(objectId.getStoreableKey(),
-                StoredGetable.class);
+        ReadOnlyTenantScopedStore store =
+                getStore(partition, false, objectId.getStore().getStoreName());
+        StoredGetable<U, T> storeResult =
+                (StoredGetable<U, T>) store.get(objectId.getStoreableKey(), StoredGetable.class);
         if (storeResult == null) {
             throw new LHApiException(Status.NOT_FOUND, "Requested object was not found.");
         }
@@ -455,8 +453,8 @@ public class BackendInternalComms implements Closeable {
 
         @Override
         public void getObject(GetObjectRequest request, StreamObserver<GetObjectResponse> observer) {
-            ObjectIdModel<?, ?, ?> id = ObjectIdModel.fromString(request.getObjectId(),
-                    AbstractGetable.getIdCls(request.getObjectType()));
+            ObjectIdModel<?, ?, ?> id =
+                    ObjectIdModel.fromString(request.getObjectId(), AbstractGetable.getIdCls(request.getObjectType()));
 
             String storeName = id.getStore().getStoreName();
             ReadOnlyTenantScopedStore store = getStore(request.getPartition(), false, storeName);
@@ -524,8 +522,7 @@ public class BackendInternalComms implements Closeable {
      */
     public InternalScanResponse doScan(InternalScan search) {
         if (search.getStoreName().equals(ServerTopology.GLOBAL_METADATA_STORE)) {
-            // This will be cleaned up in a two-part refactor of the stores. The first part
-            // is
+            // This will be cleaned up in a two-part refactor of the stores. The first part is
             // in #556.
             return doGlobalStoreScan(search);
         }
@@ -543,8 +540,7 @@ public class BackendInternalComms implements Closeable {
 
     // TODO: Remove this in part-2 of the #556 refactor
     private InternalScanResponse doGlobalStoreScan(InternalScan search) {
-        // Note that there is only one partition in the global store, because, well,
-        // it's global
+        // Note that there is only one partition in the global store, because, well, it's global
         int partition = 0;
 
         // This is also gross.
@@ -672,7 +668,8 @@ public class BackendInternalComms implements Closeable {
                 out.addAllResults(matchingObjectIds);
             }
         } else {
-            InternalScanResponse reply = getInternalClient(activeHost).internalScan(search.toProto().build());
+            InternalScanResponse reply =
+                    getInternalClient(activeHost).internalScan(search.toProto().build());
             out.addAllResults(reply.getResultsList());
         }
 
@@ -712,8 +709,8 @@ public class BackendInternalComms implements Closeable {
         }
         String bookmarkKey = null;
         boolean brokenBecauseOutOfData = true;
-        try (LHKeyValueIterator<?> iter = store.range(startKey,
-                StoredGetable.getRocksDBKey(endKey, req.getObjectType()), StoredGetable.class)) {
+        try (LHKeyValueIterator<?> iter =
+                store.range(startKey, StoredGetable.getRocksDBKey(endKey, req.getObjectType()), StoredGetable.class)) {
 
             while (iter.hasNext()) {
                 LHIterKeyValue<? extends Storeable<?>> next = iter.next();
@@ -850,15 +847,12 @@ public class BackendInternalComms implements Closeable {
         }
 
         Collection<StreamsMetadata> all = coreStreams.metadataForAllStreamsClients();
-        log.info("[000] is empty? " + all.size());
-        log.info("partition is " + partition);
         for (StreamsMetadata meta : all) {
-            log.info("[000] is metadata empty? " + all.size());
-            log.info(meta.topicPartitions().toString());
             for (TopicPartition tp : meta.topicPartitions()) {
-                if (tp.partition() != partition)
-                    continue;
-                return meta.hostInfo();
+                if (tp.partition() != partition) continue;
+                if (isCommandProcessor(tp, config)) {
+                    return meta.hostInfo();
+                }
             }
         }
         throw new LHApiException(
@@ -992,8 +986,8 @@ public class BackendInternalComms implements Closeable {
                 throw new LHApiException(Status.INTERNAL, "Not possible to have filters on non-wfrun scan");
             }
 
-            WfRunIdModel wfRunId = (WfRunIdModel) ObjectIdModel.fromString(tag.getDescribedObjectId(),
-                    WfRunIdModel.class);
+            WfRunIdModel wfRunId =
+                    (WfRunIdModel) ObjectIdModel.fromString(tag.getDescribedObjectId(), WfRunIdModel.class);
             return filters.stream().allMatch(filter -> filter.matches(wfRunId, executionContext()));
         };
 
@@ -1036,13 +1030,13 @@ public class BackendInternalComms implements Closeable {
             String startKey, String endKey, GetableClassEnum objectType, String storeName, int specificPartition) {
         ReadOnlyKeyValueStore<String, Bytes> rawStore = getRawStore(specificPartition, false, storeName);
         if (isClusterScoped(objectType)) {
-            ReadOnlyClusterScopedStore clusterStore = ReadOnlyClusterScopedStore.newInstance(rawStore,
-                    executionContext());
+            ReadOnlyClusterScopedStore clusterStore =
+                    ReadOnlyClusterScopedStore.newInstance(rawStore, executionContext());
             return clusterStore.range(startKey, endKey, Tag.class);
         } else {
             TenantIdModel currentTenantId = executionContext().authorization().tenantId();
-            ReadOnlyTenantScopedStore tenantStore = ReadOnlyTenantScopedStore.newInstance(rawStore, currentTenantId,
-                    executionContext());
+            ReadOnlyTenantScopedStore tenantStore =
+                    ReadOnlyTenantScopedStore.newInstance(rawStore, currentTenantId, executionContext());
             return tenantStore.range(startKey, endKey, Tag.class);
         }
     }
@@ -1051,13 +1045,13 @@ public class BackendInternalComms implements Closeable {
             String startKey, String endKey, GetableClassEnum objectType, String storeName, int specificPartition) {
         ReadOnlyKeyValueStore<String, Bytes> rawStore = getRawStore(specificPartition, false, storeName);
         if (isClusterScoped(objectType)) {
-            ReadOnlyClusterScopedStore clusterStore = ReadOnlyClusterScopedStore.newInstance(rawStore,
-                    executionContext());
+            ReadOnlyClusterScopedStore clusterStore =
+                    ReadOnlyClusterScopedStore.newInstance(rawStore, executionContext());
             return clusterStore.range(startKey, endKey, StoredGetable.class);
         } else {
             TenantIdModel currentTenantId = executionContext().authorization().tenantId();
-            ReadOnlyTenantScopedStore tenantStore = ReadOnlyTenantScopedStore.newInstance(rawStore, currentTenantId,
-                    executionContext());
+            ReadOnlyTenantScopedStore tenantStore =
+                    ReadOnlyTenantScopedStore.newInstance(rawStore, currentTenantId, executionContext());
             return tenantStore.range(startKey, endKey, StoredGetable.class);
         }
     }
@@ -1080,8 +1074,7 @@ public class BackendInternalComms implements Closeable {
 
     private static boolean isCommandProcessor(TaskMetadata task, LHServerConfig config) {
         for (TopicPartition tPart : task.topicPartitions()) {
-            if (isCommandProcessor(tPart, config))
-                return true;
+            if (isCommandProcessor(tPart, config)) return true;
         }
         return false;
     }
